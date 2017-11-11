@@ -1,5 +1,5 @@
 ﻿@using Barker.Views.Manage
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<BarkerUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

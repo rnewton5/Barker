@@ -8,9 +8,9 @@ using Barker.Models;
 
 namespace Barker.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class BarkerDbContext : IdentityDbContext<BarkerUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public BarkerDbContext(DbContextOptions<BarkerDbContext> options)
             : base(options)
         {
         }

@@ -16,9 +16,13 @@ namespace Barker
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder();
+
+            builder.AddUserSecrets<Startup>();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,11 +30,11 @@ namespace Barker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddEntityFrameworkNpgsql().AddDbContext<BarkerDbContext>(options =>
+                options.UseNpgsql(Configuration["BarkerConnection"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<BarkerUser, IdentityRole>()
+                .AddEntityFrameworkStores<BarkerDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.
