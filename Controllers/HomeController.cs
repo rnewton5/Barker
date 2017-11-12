@@ -12,10 +12,17 @@ namespace Barker.Controllers
     {
         public IActionResult Index()
         {
-            if(!User.Identity.IsAuthenticated){
-                return RedirectToAction("Login", "Account");
-            }
-            return View();
+            return RedirectIfNotLoggedIn();
+        }
+
+        public IActionResult Notifications()
+        {
+            return RedirectIfNotLoggedIn(); // NOT YET IMPLEMENTED
+        }
+
+        public IActionResult Messages()
+        {
+            return RedirectIfNotLoggedIn(); // NOT YET IMPLEMENTED
         }
 
 
@@ -36,6 +43,15 @@ namespace Barker.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private IActionResult RedirectIfNotLoggedIn()
+        {
+            if(!User.Identity.IsAuthenticated) 
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
         }
     }
 }
