@@ -9,5 +9,7 @@ namespace Barker.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class BarkerUser : IdentityUser
     {
+        public string Name { get; set; }
+        public List<BarkerPost> Posts { get; set; }
     }
 }

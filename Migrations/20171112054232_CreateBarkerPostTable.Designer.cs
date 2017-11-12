@@ -11,9 +11,10 @@ using System;
 namespace Barker.Migrations
 {
     [DbContext(typeof(BarkerDbContext))]
-    partial class BarkerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171112054232_CreateBarkerPostTable")]
+    partial class CreateBarkerPostTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
