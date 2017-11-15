@@ -1,3 +1,6 @@
+@inject SignInManager<BarkerUser> SignInManager
+@inject UserManager<BarkerUser> UserManager
+
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -48,11 +51,13 @@
           <a class="btn btn-secondary dropdown-toggle settings" href="#" data-toggle="dropdown">
             <span class="glyphicon glyphicon-user thumbnail hoverable" aria-hidden="true"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="#" id="">Settings</a></li>
-            <li><a asp-action="Account" asp-controller="Account">Logout</a></li>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Hey @UserManager.GetUserName(User)!</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Settings</a></li>
+            <li role="presentation"><button class="dropdown-item" type="button">Logout</button></li>
           </ul>
-        </div>
+        </div> 
         </li>
         <li><button class="btn btn-md btn-info navbar-btn" type="button">Bark</button></li>
       </ul>
