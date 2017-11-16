@@ -1,6 +1,5 @@
-﻿body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+﻿.body-content {
+  margin-top: 60px;  
 }
 
 .thumbnail {
@@ -41,6 +40,12 @@
   color: #16181b;
   text-decoration: none;
   background-color: #f5f5f5;
+}
+
+.profile-card-background {
+  height: 250px;
+  border: 1px solid gray;
+  border-top: 125px solid #1da1f2;
 }
 
 /* navbar */
