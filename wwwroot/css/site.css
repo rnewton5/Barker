@@ -18,7 +18,7 @@
   width: 100%;
 }
 
-textarea {
+.modal-textarea {
   max-width:100%; 
   min-width:100%; 
   width:100%;
@@ -221,6 +221,12 @@ textarea {
   .dropdown-button:hover {
     color: #1da1f2 !important;
     background-color: #ffffff;
+  }
+
+  .navbar-brand {
+    display: block;
+    transform: translateX(0%);
+    left: 0%;
   }
 }
 
