@@ -190,7 +190,12 @@
 
 @media (max-width: 992px){
   .navbar-brand {
-  display: none;
+    display: none;
+  }
+
+  .navbar-expanded {
+    margin-left: -15px;
+    margin-right: -15px;
   }
 }
 
