@@ -197,6 +197,10 @@
     margin-left: -15px;
     margin-right: -15px;
   }
+
+  .navbar-btn{
+    margin-right: 0;
+  }
 }
 
 /* QR code generator */
