@@ -4,7 +4,47 @@
  
 <div class="row">
   <div class="col-md-3 col-sm-4 alert profile-card-background">
-
+    <a asp-area="" asp-controller="Home" asp-action="Profile">
+      <!-- if the profile image exist, display it. otherwise display the default image -->
+      <div class="profile-card-image-background">
+      </div>
+    </a>
+    <div class="profile-card-info">
+      <p class="profile-card-name">Dezy Lou</p>
+      <p class="profile-card-handle">&#64;dezylou</p>
+    </div>
+    <div class="row profile-card-notifications">
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Barks
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Following
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Followers
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
   <div class="col-md-6 col-sm-8 alert alert-warning">
     .col-md-6

@@ -6,6 +6,7 @@
   margin-bottom: 0;
 }
 
+
 /* Carousel */
 .carousel-caption p {
   font-size: 20px;
@@ -43,9 +44,71 @@
 }
 
 .profile-card-background {
-  height: 250px;
+  height: 200px;
   border: 1px solid gray;
-  border-top: 125px solid #1da1f2;
+  border-top: 95px solid #1da1f2;
+}
+
+/* profile card */
+.profile-card-image-background {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 5;
+  left: 9px;
+  top: -83px;
+  width: 115px;
+  height: 115px;
+  background-color: #1da1f2;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  background-image: url('../images/dezy.jpg');
+  background-size: 115px;
+  background-repeat: no-repeat;
+}
+
+.profile-card-info {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 24;
+  left: 130px;
+  top: -24px;
+  width: 165px;
+  height: 20px;
+  overflow: visible;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgb(37, 37, 37);
+  line-height: 1;
+}
+
+.profile-card-name {
+  margin-bottom: 5px;
+}
+
+.profile-card-handle {
+
+}
+
+.profile-card-notifications {
+  background-color: #ffffff;
+  top: 25px;
+  height: 78px;
+  width: 100%;
+  position: absolute;
+  padding-top: 20px;
+}
+
+.profile-card-link {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+}
+
+.profile-card-link:hover {
+  text-decoration: none;
+  color: #1da1f2;
+  border-bottom: 2px solid #1da1f2;
 }
 
 /* navbar */
