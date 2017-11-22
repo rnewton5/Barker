@@ -26,20 +26,23 @@
         asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
   </environment>
+
+  <link rel="stylesheet" href="~/css/login.css"/>
 </head>
 
 <body>
   <div class="container">
     <div class="row">
       
-      <div class="col-md-8">
-        <div class="Welcome-message">
+      <div class="col-md-7">
+        <div class="welcome-message">
           <h2>Barker Welcome message placeholder</h2>  
         </div>
       </div>
 
-      <!-- Login -->
-      <div class="col-md-4 row">
+      <div class="col-md-5 row">
+
+        <!-- Login -->
         <div class="well col-md-12 col-sm-6">
           <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -102,7 +105,6 @@
         </div>
       </div> <!-- Login and what not -->
 
-    </div>
     </div>
     <hr />
     <footer>
