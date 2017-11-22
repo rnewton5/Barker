@@ -10,11 +10,14 @@ body {
   margin-bottom: 0;
 }
 
+[class*="col-"] {
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
+
 /* feed */
 .feed {
   background-color: #ffffff;
-  border-left: 5px solid #e6ecf0;
-  border-right: 5px solid #e6ecf0; 
 }
 
 /* recommendations */
@@ -39,7 +42,7 @@ body {
   position: absolute;
   z-index: 5;
   left: 9px;
-  top: -83px;
+  top: 12px;
   width: 115px;
   height: 115px;
   background-color: #1da1f2;
@@ -50,11 +53,16 @@ body {
   background-repeat: no-repeat;
 }
 
+.profile-card-bubble {
+  width: 100%;
+  height: 95px;
+  background-color: #1da1f2;
+}
+
 .profile-card {
   height: 200px;
-  border-right: 5px solid #e6ecf0;
-  border-top: 95px solid #1da1f2;
   background-color: #ffffff;
+  padding: 0;
 }
 
 .profile-image {
@@ -67,7 +75,7 @@ body {
   position: absolute;
   z-index: 24;
   left: 130px;
-  top: -24px;
+  top: 71px;
   width: 165px;
   height: 20px;
   overflow: visible;
@@ -84,8 +92,9 @@ body {
 
 
 .profile-card-notifications {
-  background-color: #ffffff;
-  top: 25px;
+  background-color: inherit;
+  top: 110px;
+  left: 15px;
   height: 78px;  
   width: 100%;
   position: absolute;
@@ -169,11 +178,6 @@ body {
   transform: translateX(-50%);
   left: 51%;
   position: absolute;
-}
-
-.navbar-collapse {
-  margin-left: -15px !important;
-  margin-right: -15px !important;
 }
 
 .navbar-btn{
@@ -282,6 +286,7 @@ body {
 }
 }
 
+/* sm screens */
 @media (max-width: 992px){
   .navbar-brand {
     display: none;
@@ -295,9 +300,21 @@ body {
   .navbar-btn{
     margin-right: 0;
   }
+
+  .feed {
+    float: right;
+  }
+
+  .container {
+    Width: 100%;
+  }
+
+  .navbar-collapse {
+    margin-right: 5px !important;
+  }
 }
 
-/* Hide/rearrange for smaller screens */
+/* xs screens */
 @media screen and (max-width: 767px) {
   /* Hide captions */
   .carousel-caption {
@@ -332,6 +349,15 @@ body {
     left: 0%;
   }
 
+  .recommendations-box{
+    display:none;
+    margin-right: 5px solid #e6ecf0;
+    margin-top: 10px;
+  }
+
+  .feed {
+    float: none;
+  }
 
 }
 
