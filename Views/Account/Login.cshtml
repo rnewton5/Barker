@@ -27,59 +27,90 @@
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
   </environment>
 </head>
+
 <body>
   <div class="container">
-    <h2>Log In</h2>
     <div class="row">
-      <div class="col-md-4 col-sm-6 col-xs-12 col-sm-push-6 col-md-push-8">
-        <section>
+      
+      <div class="col-md-8">
+        <div class="Welcome-message">
+          <h2>Barker Welcome message placeholder</h2>  
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div class="col-md-4 row">
+        <div class="well col-md-12 col-sm-6">
           <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <h4>Use a local account to log in.</h4>
-            <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
               <label asp-for="Email"></label>
-              <input asp-for="Email" class="form-control" />
+              <input asp-for="Email" class="form-control" placeholder="Email"/>
               <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
               <label asp-for="Password"></label>
-              <input asp-for="Password" class="form-control" />
+              <input asp-for="Password" class="form-control" placeholder="Password" />
               <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <div class="checkbox">
-                <label asp-for="RememberMe">
-                  <input asp-for="RememberMe" />
-                  @Html.DisplayNameFor(m => m.RememberMe)
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-default">Log in</button>
-            </div>
-            <div class="form-group">
-              <p>
-                <a asp-action="ForgotPassword">Forgot your password?</a>
-              </p>
-              <p>
-                <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-              </p>
+              <label asp-for"RememberMe" class="hidden"></label>
+              <input type="checkbox" />
+              Remember Me
+              <button type="submit" class="btn btn-danger pull-right">Log in</button>
             </div>
           </form>
-        </section>
-      </div>
-      <div class="col-md-8 col-sm-6 col-xs-12 col-sm-pull-6 col-md-pull-4">
-        <section>
-          <p>Quotes</p>
-        </section>
-      </div>
+        </div>
+
+        <!-- Register -->
+        <div class="well col-md-12 col-sm-6 register-well">
+          <form method="post">
+            <h3> Register for Barker</h3>
+            <hr/>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+              <label></label>
+              <input class="form-control" placeholder="Full Name"/>
+              <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label asp-for="Email"></label>
+              <input asp-for="Email" class="form-control" placeholder="Email"/>
+              <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label asp-for="Password"></label>
+              <input asp-for="Password" class="form-control" placeholder="Password" />
+              <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label></label>
+              <input asp-for="Password" class="form-control" placeholder="User Name" />
+              <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-danger pull-right">Register</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Create guest account -->
+        <div class="well col-sm-6 col-md-12 guest-well">
+          <h3>Want to test Barker out?</h3>
+          <hr/>
+          <a class="btn btn-warning">Create a guest account!</a>
+        </div>
+      </div> <!-- Login and what not -->
+
+    </div>
     </div>
     <hr />
     <footer>
       <p>&copy; 2017 - Barker</p>
     </footer>
   </div>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 
 @section Scripts {
