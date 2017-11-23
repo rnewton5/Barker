@@ -43,7 +43,7 @@
       <div class="col-md-5 row">
 
         <!-- Login -->
-        <div class="well col-md-12 col-sm-6">
+        <div class="well col-md-12 col-sm-6 login-well">
           <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -60,6 +60,7 @@
               <label asp-for"RememberMe" class="hidden"></label>
               <input type="checkbox" />
               Remember Me
+              <label class="hidden">submit</label>
               <button type="submit" class="btn btn-danger pull-right">Log in</button>
             </div>
           </form>
@@ -70,26 +71,26 @@
           <form method="post">
             <h3> Register for Barker</h3>
             <hr/>
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="text-danger"></div>
             <div class="form-group">
               <label></label>
               <input class="form-control" placeholder="Full Name"/>
-              <span asp-validation-for="Email" class="text-danger"></span>
+              <span  class="text-danger"></span>
             </div>
             <div class="form-group">
-              <label asp-for="Email"></label>
-              <input asp-for="Email" class="form-control" placeholder="Email"/>
-              <span asp-validation-for="Email" class="text-danger"></span>
+              <label ></label>
+              <input  class="form-control" placeholder="Email"/>
+              <span class="text-danger"></span>
             </div>
             <div class="form-group">
-              <label asp-for="Password"></label>
-              <input asp-for="Password" class="form-control" placeholder="Password" />
-              <span asp-validation-for="Password" class="text-danger"></span>
+              <label ></label>
+              <input  class="form-control" placeholder="Password" />
+              <span  class="text-danger"></span>
             </div>
             <div class="form-group">
               <label></label>
-              <input asp-for="Password" class="form-control" placeholder="User Name" />
-              <span asp-validation-for="Password" class="text-danger"></span>
+              <input  class="form-control" placeholder="User Name" />
+              <span  class="text-danger"></span>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-danger pull-right">Register</button>
@@ -101,7 +102,7 @@
         <div class="well col-sm-6 col-md-12 guest-well">
           <h3>Want to test Barker out?</h3>
           <hr/>
-          <a class="btn btn-warning">Create a guest account!</a>
+          <a class="btn btn-warning">Create a guest account in one click!</a>
         </div>
       </div> <!-- Login and what not -->
 

@@ -1,6 +1,6 @@
 body{
     background-image: url('http://www.photos-public-domain.com/wp-content/uploads/2011/11/red-clouds-at-sunrise.jpg');
-    background-size: cover;    
+    background-size: cover;   
   }
 
   h3 {
@@ -25,6 +25,10 @@ body{
    .register-well{
      float: right;
    }
+
+   .login-well {
+     margin-bottom: 15px;
+   }
   }
 
 .welcome-message {
@@ -39,5 +43,10 @@ footer {
 @media screen and (max-width: 767px) {
   .register-well{
     float: none;
+    padding-bottom: 45px;
+  }
+
+  .login-well {
+    margin-bottom: 20px;
   }
 }
