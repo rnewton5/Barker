@@ -2,7 +2,7 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
-@model LoginViewModel
+@model LoginOrRegisterViewModel
 @inject SignInManager<BarkerUser> SignInManager
 
 @{
@@ -10,6 +10,7 @@
 }
 
 <!DOCTYPE html>
+
 <html>
 <head>
   <meta charset="utf-8" />
@@ -41,21 +42,21 @@
       </div>
 
       <div class="col-md-5 row">
-
+        
         <!-- Login -->
         <div class="well col-md-12 col-sm-6 login-well">
-          <form method="post">
+          <form method="post" asp-action="Login" >
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-              <input asp-for="Email" class="form-control" placeholder="Email"/>
-              <span asp-validation-for="Email" class="text-danger"></span>
+              <input asp-for="LoginEmail" class="form-control" placeholder="Email"/>
+              <span asp-validation-for="LoginEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input asp-for="Password" class="form-control" placeholder="Password" />
-              <span asp-validation-for="Password" class="text-danger"></span>
+              <input asp-for="LoginPassword" class="form-control" placeholder="Password" />
+              <span asp-validation-for="LoginPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input asp-for"RememberMe" type="checkbox" />
+              <input asp-for"LoginRememberMe" type="checkbox" />
               <label>Remember Me?</label>
               <button type="submit" class="btn btn-danger pull-right">Log in</button>
             </div>
@@ -69,24 +70,24 @@
           <form method="post" asp-action="register">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-              <input class="form-control" placeholder="Full Name"/>
-              <span  class="text-danger"></span>
+              <input asp-for="RegisterName" class="form-control" placeholder="Full Name"/>
+              <span asp-validation-for="RegisterName" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input  class="form-control" placeholder="User Name" />
-              <span  class="text-danger"></span>
+              <input asp-for="RegisterUserName" class="form-control" placeholder="User Name" />
+              <span asp-validation-for="RegisterUserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input  class="form-control" placeholder="Email"/>
-              <span class="text-danger"></span>
+              <input asp-for="RegisterEmail" class="form-control" placeholder="Email"/>
+              <span asp-validation-for="RegisterEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input  class="form-control" placeholder="Password" />
-              <span  class="text-danger"></span>
+              <input asp-for="RegisterPassword" class="form-control" placeholder="Password" />
+              <span asp-validation-for="RegisterPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <input class="form-control" placeholder="Confirm Password" />
-              <span class="text-danger"></span>
+              <input asp-for="RegisterConfirmPassword" class="form-control" placeholder="Confirm Password" />
+              <span asp-validation-for="RegisterConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-danger pull-right">Register</button>
@@ -100,7 +101,7 @@
           <hr/>
           <a class="btn btn-warning">Create a guest account!</a>
         </div>
-      </div> <!-- Login and what not -->
+      </div> <!-- end -->
 
     </div>
     <hr />

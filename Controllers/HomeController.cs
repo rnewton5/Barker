@@ -49,7 +49,7 @@ namespace Barker.Controllers
         {
             if(!User.Identity.IsAuthenticated) 
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("LoginOrRegister", "Account");
             }
             return View();
         }
