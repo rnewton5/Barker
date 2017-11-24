@@ -13,6 +13,10 @@ body{
     color: dddddd;
   }
 
+  input {
+    margin-top: 12px;
+  }
+
   .guest-well{
     text-align: center;
   }
