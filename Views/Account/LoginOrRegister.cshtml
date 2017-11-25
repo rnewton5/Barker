@@ -16,7 +16,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Barker</title>
-
   <environment include="Development">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -44,56 +43,10 @@
       <div class="col-md-5 row">
         
         <!-- Login -->
-        <div class="well col-md-12 col-sm-6 login-well">
-          <form method="post" asp-action="Login" >
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-              <input asp-for="LoginEmail" class="form-control" placeholder="Email"/>
-              <span asp-validation-for="LoginEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for="LoginPassword" class="form-control" placeholder="Password" />
-              <span asp-validation-for="LoginPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for"LoginRememberMe" type="checkbox" />
-              <label>Remember Me?</label>
-              <button type="submit" class="btn btn-danger pull-right">Log in</button>
-            </div>
-          </form>
-        </div>
+        @await Html.PartialAsync("_LoginPartial", Model.Login)
 
         <!-- Register -->
-        <div class="well col-md-12 col-sm-6 register-well">
-          <h3> Register</h3>
-          <hr/>
-          <form method="post" asp-action="register">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-              <input asp-for="RegisterName" class="form-control" placeholder="Full Name"/>
-              <span asp-validation-for="RegisterName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for="RegisterUserName" class="form-control" placeholder="User Name" />
-              <span asp-validation-for="RegisterUserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for="RegisterEmail" class="form-control" placeholder="Email"/>
-              <span asp-validation-for="RegisterEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for="RegisterPassword" class="form-control" placeholder="Password" />
-              <span asp-validation-for="RegisterPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <input asp-for="RegisterConfirmPassword" class="form-control" placeholder="Confirm Password" />
-              <span asp-validation-for="RegisterConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-danger pull-right">Register</button>
-            </div>
-          </form>
-        </div>
+        @await Html.PartialAsync("_RegisterPartial", Model.Register)
 
         <!-- Create guest account -->
         <div class="well col-sm-6 col-md-12 guest-well">
@@ -101,7 +54,8 @@
           <hr/>
           <a class="btn btn-warning">Create a guest account!</a>
         </div>
-      </div> <!-- end -->
+
+      </div>
 
     </div>
     <hr />
@@ -110,7 +64,27 @@
     </footer>
   </div>
 
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+  </environment>
+  <environment exclude="Development">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+        asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+        asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+        crossorigin="anonymous"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+  </environment>
 </body>
 
 @section Scripts {

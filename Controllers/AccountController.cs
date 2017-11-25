@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Barker.Models;
 using Barker.Models.AccountViewModels;
 using Barker.Services;
+using System.Web;
 
 namespace Barker.Controllers
 {
@@ -51,14 +52,23 @@ namespace Barker.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        public async Task<IActionResult> LoginOrRegister(LoginOrRegisterViewModel vm)
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginOrRegisterViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {    
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.LoginEmail, model.LoginPassword, model.LoginRememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -75,35 +85,45 @@ namespace Barker.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return RedirectToAction(nameof(LoginOrRegister));
+                    TempData["info"] = "Invalid login attempt.";
+                    return RedirectToAction(
+                        nameof(LoginOrRegister), 
+                        new LoginOrRegisterViewModel {
+                            Login = model,
+                            Register = new RegisterViewModel()
+                        });
                 }
             }
             
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction(nameof(LoginOrRegister));
+            return RedirectToAction(
+                nameof(LoginOrRegister), 
+                    new LoginOrRegisterViewModel {
+                        Login = model,
+                        Register = new RegisterViewModel()
+                    });
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(LoginOrRegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new BarkerUser {  
-                    UserName = model.RegisterEmail, 
-                    Email = model.RegisterEmail,
-                    Name = model.RegisterName };
-                var result = await _userManager.CreateAsync(user, model.RegisterPassword);
+                    UserName = model.Email, 
+                    Email = model.Email,
+                    Name = model.Name };
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.RegisterEmail, callbackUrl);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
@@ -113,7 +133,12 @@ namespace Barker.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction(nameof(LoginOrRegister));
+            return RedirectToAction(
+                nameof(LoginOrRegister), 
+                new LoginOrRegisterViewModel {
+                    Login = new LoginViewModel(),
+                    Register = model
+                });
         }
 
         [HttpGet]
