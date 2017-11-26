@@ -1,21 +1,19 @@
 @model LoginViewModel
 
 <!-- Login -->
-<div class="well col-md-12 col-sm-6 login-well">
-    <form method="post" asp-action="Login" >
-    <span class="text-danger">@TempData["info"]</span>
-    <div class="form-group">
-        <input asp-for="Email" class="form-control" placeholder="Email"/>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input asp-for="Password" class="form-control" placeholder="Password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input asp-for"RememberMe" type="checkbox" />
-        <label>Remember Me?</label>
-        <button type="submit" class="btn btn-danger pull-right">Log in</button>
-    </div>
-    </form>
-</div>
+<form method="post" asp-action="Login" >
+  <span class="text-danger">@TempData["info"]</span>
+  <div class="form-group">
+    <input asp-for="Email" class="form-control" placeholder="Email"/>
+    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <input asp-for="Password" class="form-control" placeholder="Password" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <input asp-for"RememberMe" type="checkbox" />
+    <label>Remember Me?</label>
+    <button type="submit" class="btn btn-danger pull-right">Log in</button>
+  </div>
+</form>

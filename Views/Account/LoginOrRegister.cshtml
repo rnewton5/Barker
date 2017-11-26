@@ -43,11 +43,15 @@
       <div class="col-md-5 row">
         
         <!-- Login -->
-        @await Html.PartialAsync("_LoginPartial", Model.Login)
+        <div class="well col-md-12 col-sm-6 login-well">
+          @await Html.PartialAsync("_LoginPartial", Model.Login)
+        </div>
 
         <!-- Register -->
-        @await Html.PartialAsync("_RegisterPartial", Model.Register)
-
+        <div class="well col-md-12 col-sm-6 register-well">
+          @await Html.PartialAsync("_RegisterPartial", Model.Register)
+        </div>
+        
         <!-- Create guest account -->
         <div class="well col-sm-6 col-md-12 guest-well">
           <h3>Want to test Barker out?</h3>
