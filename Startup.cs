@@ -53,7 +53,7 @@ namespace Barker
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Profile/Error");
             }
 
             app.UseStaticFiles();
@@ -64,7 +64,7 @@ namespace Barker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Profile}/{action=Home}/{id?}");
             });
         }
     }

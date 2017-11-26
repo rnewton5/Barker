@@ -8,21 +8,26 @@ using Barker.Models;
 
 namespace Barker.Controllers
 {
-    public class HomeController : Controller
+    public class ProfileController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Home()
         {
-            return RedirectIfNotLoggedIn();
+            return ReturnViewIfLoggedIn();
+        }
+
+        [HttpPost]
+        public void PostBark(){
+
         }
 
         public IActionResult Notifications()
         {
-            return RedirectIfNotLoggedIn(); // NOT YET IMPLEMENTED
+            return ReturnViewIfLoggedIn(); // NOT YET IMPLEMENTED
         }
 
         public IActionResult Messages()
         {
-            return RedirectIfNotLoggedIn(); // NOT YET IMPLEMENTED
+            return ReturnViewIfLoggedIn(); // NOT YET IMPLEMENTED
         }
 
 
@@ -45,7 +50,7 @@ namespace Barker.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private IActionResult RedirectIfNotLoggedIn()
+        private IActionResult ReturnViewIfLoggedIn()
         {
             if(!User.Identity.IsAuthenticated) 
             {

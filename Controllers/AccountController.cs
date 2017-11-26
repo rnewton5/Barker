@@ -52,15 +52,6 @@ namespace Barker.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginOrRegister(LoginOrRegisterViewModel vm)
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return View(vm);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {    
@@ -72,7 +63,7 @@ namespace Barker.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(ProfileController.Home), "Profile");
                 }
                 /*if (result.RequiresTwoFactor)
                 {
@@ -86,23 +77,12 @@ namespace Barker.Controllers
                 else
                 {
                     TempData["info"] = "Invalid login attempt.";
-                    return RedirectToAction(
-                        nameof(LoginOrRegister), 
-                        new LoginOrRegisterViewModel {
-                            Login = model,
-                            Register = new RegisterViewModel()
-                        });
+                    return RedirectToAction(nameof(LoginOrRegister));
                 }
-            }
-            
+            }            
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction(
-                nameof(LoginOrRegister), 
-                    new LoginOrRegisterViewModel {
-                        Login = model,
-                        Register = new RegisterViewModel()
-                    });
+            return RedirectToAction(nameof(LoginOrRegister));
         }
 
         [HttpPost]
@@ -127,18 +107,13 @@ namespace Barker.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(ProfileController.Home), "Profile");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction(
-                nameof(LoginOrRegister), 
-                new LoginOrRegisterViewModel {
-                    Login = new LoginViewModel(),
-                    Register = model
-                });
+            return RedirectToAction(nameof(LoginOrRegister));
         }
 
         [HttpGet]
@@ -264,7 +239,7 @@ namespace Barker.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(LoginOrRegister));
         }
 
 
@@ -274,7 +249,7 @@ namespace Barker.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(ProfileController.Home), "Profile");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -394,7 +369,7 @@ namespace Barker.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(ProfileController.Home), "Profile");
             }
         }
 
