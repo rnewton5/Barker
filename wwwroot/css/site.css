@@ -20,6 +20,10 @@ body {
   background-color: #ffffff;
 }
 
+.feed > form {
+  margin-bottom: 38px;
+}
+
 /* recommendations */
 .recommendations-box {
   background-color: #ffffff;
