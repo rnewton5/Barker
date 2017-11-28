@@ -50,7 +50,8 @@ namespace Barker.Controllers
                 var author = _userManager.GetUserAsync(HttpContext.User);
                 BarkerPost post = new BarkerPost(){
                     Message = model.Message,
-                    Author = author.Result,
+                    User = author.Result,
+                    Author = author.Result.UserName,
                     PostDate = DateTime.Now
                 };
                 _context.Barks.Add(post);

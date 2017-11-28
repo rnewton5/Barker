@@ -60,6 +60,7 @@
   @foreach (var bark in Model.Barks){
     <div class="post">
       <hr>
+      <h4>@bark.Author</h4>
       <p>@bark.Message</p>
       <h6 class="pull-right">@bark.PostDate</h6>
     </div>

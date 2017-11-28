@@ -12,9 +12,7 @@ namespace Barker.Data
     {
         public BarkerDbContext(DbContextOptions<BarkerDbContext> options)
             : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        { }
         public DbSet<BarkerPost> Barks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
