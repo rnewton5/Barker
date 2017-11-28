@@ -14,6 +14,7 @@ using Barker.Models;
 using Barker.Models.AccountViewModels;
 using Barker.Services;
 using System.Web;
+using Barker.Data;
 
 namespace Barker.Controllers
 {
@@ -26,16 +27,20 @@ namespace Barker.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
+        private readonly BarkerDbContext _context;
+
         public AccountController(
             UserManager<BarkerUser> userManager,
             SignInManager<BarkerUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            BarkerDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -59,7 +64,8 @@ namespace Barker.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                string userName = _context.Users.Where(x => x.Email == model.Email).SingleOrDefault().UserName;
+                var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -93,7 +99,7 @@ namespace Barker.Controllers
             if (ModelState.IsValid)
             {
                 var user = new BarkerUser {  
-                    UserName = model.Email, 
+                    UserName = model.UserName, 
                     Email = model.Email,
                     Name = model.Name };
                 var result = await _userManager.CreateAsync(user, model.Password);

@@ -35,8 +35,12 @@ namespace Barker.Controllers
             foreach (var bark in _context.Barks){
                 barks.Add(bark);
             }
+            barks.Reverse();
 
+            var user = _userManager.GetUserAsync(HttpContext.User);
             HomeViewModel homeVm = new HomeViewModel() {
+                Name = user.Result.Name,
+                UserName = user.Result.UserName,
                 SubmitBarkVm = new SubmitBarkViewModel(),
                 Barks = barks
             };
