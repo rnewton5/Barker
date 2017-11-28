@@ -29,6 +29,8 @@ namespace Barker.Controllers
             {
                 return RedirectToAction("LoginOrRegister", "Account");
             }
+
+            // THIS IS A TEMPORARY SOLUTION
             List<BarkerPost> barks = new List<BarkerPost>();
             foreach (var bark in _context.Barks){
                 barks.Add(bark);
