@@ -1,5 +1,6 @@
 @inject SignInManager<BarkerUser> SignInManager
 @inject UserManager<BarkerUser> UserManager
+@model Barker.Models.ProfileViewModels.SubmitBarkViewModel
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -122,13 +123,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <textarea class="modal-textarea" placeholder="Enter your Bark here!"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Bark</button>
-      </div>
+      <form method="post" asp-controller="Profile" asp-action="SubmitBark">
+        <div class="modal-body">
+          <span asp-validation-for="Message" class="text-danger"></span>
+          <textarea asp-for="Message" class="modal-textarea" placeholder="Enter your Bark here!"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button submit" class="btn btn-primary">Bark</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

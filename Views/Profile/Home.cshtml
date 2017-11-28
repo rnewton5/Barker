@@ -3,7 +3,9 @@
 @{
   ViewData["Title"] = "Home Page";
 }
- 
+
+@await Html.PartialAsync("_Navbar", Model.SubmitBarkVm)
+
 <div class="row">
 <div class="col-md-3 col-sm-4 profile-card">
   <div class="profile-card-bubble"></div>
