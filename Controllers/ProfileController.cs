@@ -29,17 +29,35 @@ namespace Barker.Controllers
             {
                 return RedirectToAction("LoginOrRegister", "Account");
             }
-            return View(new HomeViewModel());
+            List<BarkerPost> barks = new List<BarkerPost>();
+            foreach (var bark in _context.Barks){
+                barks.Add(bark);
+            }
+
+            HomeViewModel homeVm = new HomeViewModel() {
+                SubmitBarkVm = new SubmitBarkViewModel(),
+                Barks = barks
+            };
+
+            return View(homeVm);
         }
 
         [HttpPost]
-        public void SubmitBark(SubmitBarkViewModel model){
+        public async Task<IActionResult> SubmitBark(SubmitBarkViewModel model){
             if(ModelState.IsValid){
-                var id = _userManager.GetUserId(HttpContext.User);
-                
+                var author = _userManager.GetUserAsync(HttpContext.User);
+                BarkerPost post = new BarkerPost(){
+                    Message = model.Message,
+                    Author = author.Result,
+                    PostDate = DateTime.Now
+                };
+                _context.Barks.Add(post);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Home));
             }
-            //TODO add error message to tempdata
-            RedirectToAction(nameof(Home));
+            TempData["ErrorMessage"] = "An error occurred when submitting your Bark."
+                + "Please try again later.";
+            return RedirectToAction(nameof(Home));            
         }
 
         public IActionResult Notifications()
