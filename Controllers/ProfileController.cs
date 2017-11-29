@@ -31,14 +31,33 @@ namespace Barker.Controllers
             }
 
             var user = _userManager.GetUserAsync(HttpContext.User);
-            HomeViewModel homeVm = new HomeViewModel() {
+            ProfileViewModel model = new ProfileViewModel() {
                 Name = user.Result.Name,
                 UserName = user.Result.UserName,
                 SubmitBarkVm = new SubmitBarkViewModel(),
                 Barks = _context.Barks.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
-            return View(homeVm);
+            return View(model);
+        }
+
+        public IActionResult UserProfile(string userName){
+            if(userName == null){
+                return RedirectToAction(nameof(Home));
+            }
+            var user = _context.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).SingleOrDefault();
+            if (user == null) {
+                TempData["error"] = "Unable to find user " + userName + ".";
+                return RedirectToAction(nameof(Home));
+            }
+            ProfileViewModel model = new ProfileViewModel() {
+                Name = user.Name,
+                UserName = user.UserName,
+                SubmitBarkVm = new SubmitBarkViewModel(),
+                Barks = _context.Barks.Where(x => x.User == user)
+                            .OrderByDescending(x => x.PostDate).Take(10).ToList()
+            };
+            return View(model);
         }
 
         [HttpPost]

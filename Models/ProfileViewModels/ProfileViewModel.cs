@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Barker.Models.ProfileViewModels
 {
-    public class HomeViewModel
+    public class ProfileViewModel
     {
         public string Name { get; set; }
         public string UserName { get; set; }
