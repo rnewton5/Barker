@@ -30,19 +30,12 @@ namespace Barker.Controllers
                 return RedirectToAction("LoginOrRegister", "Account");
             }
 
-            // THIS IS A TEMPORARY SOLUTION
-            List<BarkerPost> barks = new List<BarkerPost>();
-            foreach (var bark in _context.Barks){
-                barks.Add(bark);
-            }
-            barks.Reverse();
-
             var user = _userManager.GetUserAsync(HttpContext.User);
             HomeViewModel homeVm = new HomeViewModel() {
                 Name = user.Result.Name,
                 UserName = user.Result.UserName,
                 SubmitBarkVm = new SubmitBarkViewModel(),
-                Barks = barks
+                Barks = _context.Barks.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
             return View(homeVm);
