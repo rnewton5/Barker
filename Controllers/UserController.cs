@@ -13,12 +13,12 @@ using Barker.Data;
 
 namespace Barker.Controllers
 {
-    public class ProfileController : Controller
+    public class UserController : Controller
     {
         private readonly BarkerDbContext _context;
         private readonly UserManager<BarkerUser> _userManager;
 
-        public ProfileController(BarkerDbContext context, UserManager<BarkerUser> userManager){
+        public UserController(BarkerDbContext context, UserManager<BarkerUser> userManager){
             _context = context;
             _userManager = userManager;
         }
@@ -41,7 +41,12 @@ namespace Barker.Controllers
             return View(model);
         }
 
-        public IActionResult UserProfile(string userName){
+        //User/Profile/<userName>
+        public IActionResult Profile(string userName){
+            if(!User.Identity.IsAuthenticated) 
+            {
+                return RedirectToAction("LoginOrRegister", "Account");
+            }
             if(userName == null){
                 return RedirectToAction(nameof(Home));
             }
@@ -62,6 +67,11 @@ namespace Barker.Controllers
 
         [HttpPost]
         public async Task<IActionResult> SubmitBark(SubmitBarkViewModel model){
+            if(!User.Identity.IsAuthenticated) 
+            {
+                TempData["ErrorMessage"] = "You must be logged in to do that.";
+                return RedirectToAction("LoginOrRegister", "Account");
+            }
             if(ModelState.IsValid){
                 var author = _userManager.GetUserAsync(HttpContext.User);
                 BarkerPost post = new BarkerPost(){

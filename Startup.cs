@@ -64,7 +64,7 @@ namespace Barker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Profile}/{action=Home}/{id?}");
+                    template: "{controller=User}/{action=Home}/{userName?}");
             });
         }
     }
