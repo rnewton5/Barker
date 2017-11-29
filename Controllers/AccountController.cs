@@ -62,8 +62,6 @@ namespace Barker.Controllers
         {    
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 string userName = _context.Users.Where(x => x.Email == model.Email).SingleOrDefault().UserName;
                 var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
@@ -75,19 +73,14 @@ namespace Barker.Controllers
                 {
                     return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
                 }*/
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
                 else
                 {
                     TempData["info"] = "Invalid login attempt.";
                     return RedirectToAction(nameof(LoginOrRegister));
                 }
             }            
-
             // If we got this far, something failed, redisplay form
+            TempData["info"] = "Invalid login attempt.";
             return RedirectToAction(nameof(LoginOrRegister));
         }
 
@@ -101,15 +94,18 @@ namespace Barker.Controllers
                 var user = new BarkerUser {  
                     UserName = model.UserName, 
                     Email = model.Email,
-                    Name = model.Name };
+                    Name = model.Name 
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    /*
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    */
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
@@ -119,6 +115,7 @@ namespace Barker.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            TempData["info"] = "Invalid information provided";
             return RedirectToAction(nameof(LoginOrRegister));
         }
 
