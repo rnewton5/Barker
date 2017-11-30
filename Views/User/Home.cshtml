@@ -1,10 +1,10 @@
-﻿@model Barker.Models.ProfileViewModels.ProfileViewModel
+﻿@model Barker.Models.UserViewModels.ProfileViewModel
 
 @{
   ViewData["Title"] = "Home Page";
 }
 
-@await Html.PartialAsync("_Navbar", Model.SubmitBarkVm)
+@await Html.PartialAsync("_Navbar", Model.SubmitPostVm)
 
 <div class="row">
 <div class="col-md-3 col-sm-4 profile-card">
@@ -56,7 +56,7 @@
   <h4>
     Something on your mind?
   </h4>
-  @await Html.PartialAsync("_SubmitBarkPartial", Model.SubmitBarkVm)
+  @await Html.PartialAsync("_SubmitBarkPartial", Model.SubmitPostVm)
   @foreach (var bark in Model.Barks){
     <div class="post">
       <hr>

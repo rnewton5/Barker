@@ -1,6 +1,6 @@
 @inject SignInManager<BarkerUser> SignInManager
 @inject UserManager<BarkerUser> UserManager
-@model Barker.Models.ProfileViewModels.SubmitBarkViewModel
+@model Barker.Models.PostViewModels.SubmitPostViewModel
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -56,7 +56,7 @@
             <li><a role="menuitem" tabindex="-1" asp-area="" asp-controller="Home" asp-action="Profile">Hello @UserManager.GetUserName(User)!</a></li>
             <li class="divider"></li>
             <li><a role="menuitem" tabindex="-1" asp-area="" asp-controller="Account" asp-action="Manage">Settings</a></li>
-            <form asp-area="" asp-controller="Account" asp-action="Logout" method="get" id="logoutForm" >
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" >
               <li><button class="dropdown-button" type="submit">Log out</button></li>
             </form>
           </ul>
@@ -123,7 +123,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" asp-controller="User" asp-action="SubmitBark">
+      <form method="post" asp-controller="Post" asp-action="SubmitPost">
         <div class="modal-body">
           <span asp-validation-for="Message" class="text-danger"></span>
           <textarea asp-for="Message" class="modal-textarea" placeholder="Enter your Bark here!"></textarea>

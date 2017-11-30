@@ -67,7 +67,7 @@ namespace Barker.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction(nameof(UserController.Home), "Home");
+                    return RedirectToAction(nameof(UserController.Home), "User");
                 }
                 /*if (result.RequiresTwoFactor)
                 {
@@ -109,7 +109,7 @@ namespace Barker.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToAction(nameof(UserController.Home), "Home");
+                    return RedirectToAction(nameof(UserController.Home), "User");
                 }
                 AddErrors(result);
             }
@@ -119,7 +119,7 @@ namespace Barker.Controllers
             return RedirectToAction(nameof(LoginOrRegister));
         }
 
-        [HttpGet]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {

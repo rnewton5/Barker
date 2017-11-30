@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Barker.Models;
-using Barker.Models.ProfileViewModels;
+using Barker.Models.UserViewModels;
 using Barker.Data;
+using Barker.Models.PostViewModels;
 
 namespace Barker.Controllers
 {
@@ -34,7 +35,7 @@ namespace Barker.Controllers
             ProfileViewModel model = new ProfileViewModel() {
                 Name = user.Result.Name,
                 UserName = user.Result.UserName,
-                SubmitBarkVm = new SubmitBarkViewModel(),
+                SubmitPostVm = new SubmitPostViewModel(),
                 Barks = _context.Barks.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
@@ -58,7 +59,7 @@ namespace Barker.Controllers
             ProfileViewModel model = new ProfileViewModel() {
                 Name = user.Name,
                 UserName = user.UserName,
-                SubmitBarkVm = new SubmitBarkViewModel(),
+                SubmitPostVm = new SubmitPostViewModel(),
                 Barks = _context.Barks.Where(x => x.User == user)
                             .OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
@@ -66,7 +67,7 @@ namespace Barker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitBark(SubmitBarkViewModel model){
+        public async Task<IActionResult> SubmitBark(SubmitPostViewModel model){
             if(!User.Identity.IsAuthenticated) 
             {
                 TempData["ErrorMessage"] = "You must be logged in to do that.";

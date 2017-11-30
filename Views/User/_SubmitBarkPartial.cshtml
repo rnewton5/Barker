@@ -1,6 +1,6 @@
-@model Barker.Models.ProfileViewModels.SubmitBarkViewModel
+@model Barker.Models.PostViewModels.SubmitPostViewModel
 
-<form method="post" asp-action="SubmitBark">
+<form method="post" asp-controller="Post" asp-action="SubmitPost">
   <span asp-validation-for="Message" class="text-danger"></span>
   <textarea asp-for="Message" class="bark-textarea" placeholder="Enter your Bark here."></textarea>
   <button type="submit" class="btn btn-md btn-info pull-right">Bark</button>

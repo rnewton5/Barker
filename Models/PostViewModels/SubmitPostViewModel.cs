@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Barker.Models.ProfileViewModels
+namespace Barker.Models.PostViewModels
 {
-    public class SubmitBarkViewModel
+    public class SubmitPostViewModel
     {
         [Required]
         [StringLength(150, MinimumLength = 1, ErrorMessage = "Message must be between 1 and 150 characters.")]
