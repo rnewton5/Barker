@@ -17,9 +17,9 @@ namespace Barker.Controllers
     public class UserController : Controller
     {
         private readonly BarkerDbContext _context;
-        private readonly UserManager<BarkerUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public UserController(BarkerDbContext context, UserManager<BarkerUser> userManager){
+        public UserController(BarkerDbContext context, UserManager<User> userManager){
             _context = context;
             _userManager = userManager;
         }
@@ -36,7 +36,7 @@ namespace Barker.Controllers
                 Name = user.Result.Name,
                 UserName = user.Result.UserName,
                 SubmitPostVm = new SubmitPostViewModel(),
-                Barks = _context.Barks.OrderByDescending(x => x.PostDate).Take(10).ToList()
+                Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
             return View(model);
@@ -60,7 +60,7 @@ namespace Barker.Controllers
                 Name = user.Name,
                 UserName = user.UserName,
                 SubmitPostVm = new SubmitPostViewModel(),
-                Barks = _context.Barks.Where(x => x.User == user)
+                Barks = _context.Posts.Where(x => x.User == user)
                             .OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
             return View(model);
@@ -75,13 +75,13 @@ namespace Barker.Controllers
             }
             if(ModelState.IsValid){
                 var author = _userManager.GetUserAsync(HttpContext.User);
-                BarkerPost post = new BarkerPost(){
+                Post post = new Post(){
                     Message = model.Message,
                     User = author.Result,
                     Author = author.Result.UserName,
                     PostDate = DateTime.Now
                 };
-                _context.Barks.Add(post);
+                _context.Posts.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Home));
             }

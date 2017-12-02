@@ -8,16 +8,20 @@ using Barker.Models;
 
 namespace Barker.Data
 {
-    public class BarkerDbContext : IdentityDbContext<BarkerUser>
+    public class BarkerDbContext : IdentityDbContext<User>
     {
         public BarkerDbContext(DbContextOptions<BarkerDbContext> options)
             : base(options)
         { }
-        public DbSet<BarkerPost> Barks { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Following> Followings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<BarkerPost>().ToTable("BarkerPost");
+            builder.Entity<Post>().ToTable("Posts");
+            builder.Entity<Like>().ToTable("Likes");
+            builder.Entity<Following>().ToTable("Followings");
 
             base.OnModelCreating(builder);
         }

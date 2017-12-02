@@ -33,7 +33,7 @@ namespace Barker
             services.AddEntityFrameworkNpgsql().AddDbContext<BarkerDbContext>(options =>
                 options.UseNpgsql(Configuration["BarkerConnection"]));
 
-            services.AddIdentity<BarkerUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<BarkerDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -64,7 +64,7 @@ namespace Barker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=User}/{action=Home}/{userName?}");
+                    template: "{controller=User}/{action=Home}");
             });
         }
     }

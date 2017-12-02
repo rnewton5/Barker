@@ -17,9 +17,9 @@ namespace Barker.Controllers
     public class PostController : Controller
     {
         private readonly BarkerDbContext _context;
-        private readonly UserManager<BarkerUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public PostController(BarkerDbContext context, UserManager<BarkerUser> userManager)
+        public PostController(BarkerDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -40,13 +40,13 @@ namespace Barker.Controllers
                 }
                 return Json(new { 
                     Message = "Success!", 
-                    Barks = _context.Barks.Where(x => x.User.UserName == userName).OrderByDescending(x => x.PostDate).ToList()
+                    Barks = _context.Posts.Where(x => x.User.UserName == userName).OrderByDescending(x => x.PostDate).ToList()
                 });
             }
             else
             {
                 // THIS IS A TEMPORARY SOLUTION
-                return Json(new { Barks = _context.Barks.OrderByDescending(x => x.PostDate).Take(10).ToList()});
+                return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()});
             }
         }
 
@@ -63,13 +63,13 @@ namespace Barker.Controllers
                 if(ModelState.IsValid)
                 {
                     var author = _userManager.GetUserAsync(User);
-                    BarkerPost post = new BarkerPost(){
+                    Post post = new Post(){
                         Message = model.Message,
                         User = author.Result,
                         Author = author.Result.UserName,
                         PostDate = DateTime.Now
                     };
-                    _context.Barks.Add(post);
+                    _context.Posts.Add(post);
                     await _context.SaveChangesAsync();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                     return Json(new { Message = "Success!"});

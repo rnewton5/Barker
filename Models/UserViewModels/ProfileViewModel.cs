@@ -13,6 +13,6 @@ namespace Barker.Models.UserViewModels
         public string UserName { get; set; }
 
         public SubmitPostViewModel SubmitPostVm { get; set; }
-        public List<BarkerPost> Barks { get; set; }
+        public List<Post> Barks { get; set; }
     }
 }

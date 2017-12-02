@@ -11,8 +11,8 @@ using System;
 namespace Barker.Migrations
 {
     [DbContext(typeof(BarkerDbContext))]
-    [Migration("20171111162034_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20171202174513_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,64 @@ namespace Barker.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
-            modelBuilder.Entity("Barker.Models.BarkerUser", b =>
+            modelBuilder.Entity("Barker.Models.Following", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FollowerId");
+
+                    b.Property<string>("FollowingId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.ToTable("Followings");
+                });
+
+            modelBuilder.Entity("Barker.Models.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("PostId");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("Barker.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Author")
+                        .IsRequired();
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.Property<DateTime>("PostDate");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Barker.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -39,6 +96,10 @@ namespace Barker.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -178,6 +239,28 @@ namespace Barker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Barker.Models.Following", b =>
+                {
+                    b.HasOne("Barker.Models.User", "Follower")
+                        .WithMany("Followings")
+                        .HasForeignKey("FollowerId");
+                });
+
+            modelBuilder.Entity("Barker.Models.Like", b =>
+                {
+                    b.HasOne("Barker.Models.Post", "Post")
+                        .WithMany("likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Barker.Models.Post", b =>
+                {
+                    b.HasOne("Barker.Models.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -188,7 +271,7 @@ namespace Barker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Barker.Models.BarkerUser")
+                    b.HasOne("Barker.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -196,7 +279,7 @@ namespace Barker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Barker.Models.BarkerUser")
+                    b.HasOne("Barker.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -209,7 +292,7 @@ namespace Barker.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Barker.Models.BarkerUser")
+                    b.HasOne("Barker.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -217,7 +300,7 @@ namespace Barker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Barker.Models.BarkerUser")
+                    b.HasOne("Barker.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -22,16 +22,16 @@ namespace Barker.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<BarkerUser> _userManager;
-        private readonly SignInManager<BarkerUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         private readonly BarkerDbContext _context;
 
         public AccountController(
-            UserManager<BarkerUser> userManager,
-            SignInManager<BarkerUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
             BarkerDbContext context)
@@ -91,7 +91,7 @@ namespace Barker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new BarkerUser {  
+                var user = new User {  
                     UserName = model.UserName, 
                     Email = model.Email,
                     Name = model.Name 
