@@ -35,7 +35,7 @@ namespace Barker.Controllers
             ProfileViewModel model = new ProfileViewModel() {
                 Name = user.Result.Name,
                 UserName = user.Result.UserName,
-                SubmitPostVm = new SubmitPostViewModel(),
+                PostVm = new PostViewModel(),
                 Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
@@ -59,45 +59,21 @@ namespace Barker.Controllers
             ProfileViewModel model = new ProfileViewModel() {
                 Name = user.Name,
                 UserName = user.UserName,
-                SubmitPostVm = new SubmitPostViewModel(),
+                PostVm = new PostViewModel(),
                 Barks = _context.Posts.Where(x => x.User == user)
                             .OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SubmitBark(SubmitPostViewModel model){
-            if(!User.Identity.IsAuthenticated) 
-            {
-                TempData["ErrorMessage"] = "You must be logged in to do that.";
-                return RedirectToAction("LoginOrRegister", "Account");
-            }
-            if(ModelState.IsValid){
-                var author = _userManager.GetUserAsync(HttpContext.User);
-                Post post = new Post(){
-                    Message = model.Message,
-                    User = author.Result,
-                    Author = author.Result.UserName,
-                    PostDate = DateTime.Now
-                };
-                _context.Posts.Add(post);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Home));
-            }
-            TempData["ErrorMessage"] = "An error occurred when submitting your Bark."
-                + "Please try again later.";
-            return RedirectToAction(nameof(Home));            
-        }
-
         public IActionResult Notifications()
         {
-            return ReturnViewIfLoggedIn(); // NOT YET IMPLEMENTED
+            return NoContent(); // NOT YET IMPLEMENTED
         }
 
         public IActionResult Messages()
         {
-            return ReturnViewIfLoggedIn(); // NOT YET IMPLEMENTED
+            return NoContent(); // NOT YET IMPLEMENTED
         }
 
 
@@ -118,15 +94,6 @@ namespace Barker.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        private IActionResult ReturnViewIfLoggedIn()
-        {
-            if(!User.Identity.IsAuthenticated) 
-            {
-                return RedirectToAction("LoginOrRegister", "Account");
-            }
-            return View();
         }
     }
 }

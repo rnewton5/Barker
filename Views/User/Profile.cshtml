@@ -4,7 +4,7 @@
   ViewData["Title"] = "Home Page";
 }
 
-@await Html.PartialAsync("_Navbar", Model.SubmitPostVm)
+@await Html.PartialAsync("_Navbar", Model.PostVm)
 
 <div class="row">
 <div class="col-md-3 col-sm-4 profile-card">
@@ -56,7 +56,7 @@
   <h4>
     Something on your mind?
   </h4>
-  @await Html.PartialAsync("_SubmitBarkPartial", Model.SubmitPostVm)
+  @await Html.PartialAsync("_SubmitPostPartial", Model.PostVm)
   @foreach (var bark in Model.Barks){
     <div class="post">
       <hr>

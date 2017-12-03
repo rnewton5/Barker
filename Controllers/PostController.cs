@@ -11,6 +11,7 @@ using Barker.Models;
 using Barker.Data;
 using System.Net;
 using Barker.Models.PostViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Barker.Controllers
 {
@@ -25,33 +26,9 @@ namespace Barker.Controllers
             _userManager = userManager;
         }
 
-        //[Route("{userName?}")]
-        public JsonResult GetBarks(string userName)
-        {
-            // if userName is not null, get the posts exclusively from that user.
-            // if it is null, get posts for the feed of the currently logged in user
-            if(userName != null)
-            {
-                var user = _context.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).SingleOrDefault();
-                if (user == null)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Json(new { Message = "Unable to find user " + userName});
-                }
-                return Json(new { 
-                    Message = "Success!", 
-                    Barks = _context.Posts.Where(x => x.User.UserName == userName).OrderByDescending(x => x.PostDate).ToList()
-                });
-            }
-            else
-            {
-                // THIS IS A TEMPORARY SOLUTION
-                return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()});
-            }
-        }
-
+        
         [HttpPost]
-        public async Task<JsonResult> SubmitPost(SubmitPostViewModel model, string returnUrl)
+        public async Task<JsonResult> SubmitPost(PostViewModel model, string returnUrl)
         {
             if(!User.Identity.IsAuthenticated) 
             {
@@ -62,11 +39,11 @@ namespace Barker.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    var author = _userManager.GetUserAsync(User);
+                    var user = await _userManager.GetUserAsync(User);
                     Post post = new Post(){
                         Message = model.Message,
-                        User = author.Result,
-                        Author = author.Result.UserName,
+                        User = user,
+                        Author = user.UserName,
                         PostDate = DateTime.Now
                     };
                     _context.Posts.Add(post);
@@ -84,6 +61,163 @@ namespace Barker.Controllers
             }      
         }
 
-        //TODO: add edit and delete methods
+        //
+        public async Task<JsonResult> GetPost(int? postId)
+        {
+            if (postId == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json(new { Message = "Unable to find post"});
+            }
+
+            try
+            {
+                var post = await _context.Posts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == postId);
+                if (post == null)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    return Json(new { Message = "Unable to find post"});
+                }
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                return Json(new { Bark = post});
+            }
+            catch(Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message });
+            }
+        }
+
+        //TODO: update this method to work more dynamically
+        public async Task<JsonResult> GetPosts(string userName)
+        {
+            try
+            {
+                // if userName is not null, get the posts exclusively from that user.
+                // if it is null, get posts for the feed of the currently logged in user
+                if(userName != null)
+                {
+                    var user = await _context.Users.AsNoTracking().SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
+                    if (user == null)
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Json(new { Message = "Unable to find user " + userName});
+                    }
+                    Response.StatusCode = (int)HttpStatusCode.OK;
+                    return Json(new { 
+                        Barks = _context.Posts
+                                    .AsNoTracking()
+                                    .Where(x => x.Author == userName)
+                                    .OrderByDescending(x => x.PostDate)
+                                    .Take(10)
+                                    .ToList()
+                    });
+                }
+                else
+                {
+                    // THIS IS A TEMPORARY SOLUTION
+                    // In the final product it will only get the barks by people you follow
+                    Response.StatusCode = (int)HttpStatusCode.OK;
+                    return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()});
+                }
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message});
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditPost(PostViewModel model, int? postId){
+            // if postId is null or if the post does not exist return error message
+            if (postId == null || !postExists(postId))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json(new { Message = "Unable to find post"});
+            }
+
+            // if the currently logged in user is not the owner of the post, return an error message
+            if (!UserOwnsPost(postId))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return Json(new { Message = "You cannot alter a post that is not yours"});                
+            }
+
+            // if the user owns the post, attempt to alter the body of it
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var postToUpdate = await _context.Posts.SingleAsync(x => x.Id == postId);
+                    postToUpdate.Message = model.Message;
+                    _context.Posts.Update(postToUpdate);
+                    await _context.SaveChangesAsync();
+                    Response.StatusCode = (int)HttpStatusCode.OK;
+                    return Json(new { Message = "Success!"});
+                }
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = "Unable to update post"});
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message});
+            }
+        }
+
+        public async Task<JsonResult> DeletePost(int? postId)
+        {
+            // if postId is null or if the post does not exist return error message
+            if (postId == null || !postExists(postId))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json(new { Message = "Unable to find post"});
+            }
+
+            // if the currently logged in user is not the owner of the post, return an error message
+            if (!UserOwnsPost(postId))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return Json(new { Message = "You cannot alter a post that is not yours"});                
+            }
+
+            // if the user owns the post, attempt to delete it from the database
+            try
+            {
+                var postToRemove = await _context.Posts.SingleAsync(x => x.Id == postId);
+                _context.Posts.Remove(postToRemove);
+                await _context.SaveChangesAsync();
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                return Json(new { Message = "Success!"});
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message});
+            }
+        }
+
+        // Returns true if the currently logged in user is the author of the post. false if they do not
+        private bool UserOwnsPost(int? postId)
+        {
+            if (postId == null)
+            {                
+                try
+                {
+                    var userId = _userManager.GetUserId(User);
+                    var postOwnerId = _context.Posts.Single(x => x.Id == postId).UserId;
+                    return (userId == postOwnerId);
+                }
+                catch(Exception) { /* do nothing */ }
+            }
+            return false;
+        }
+
+        // Returns true if a post with the corresponding Id exists in the database
+        private bool postExists(int? postId)
+        {
+            return _context.Posts.Any(x => x.Id == postId);
+        }
     }
 }

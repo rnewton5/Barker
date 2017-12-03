@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Barker.Models.PostViewModels
 {
-    public class SubmitPostViewModel
+    public class PostViewModel
     {
         [Required]
         [StringLength(150, MinimumLength = 1, ErrorMessage = "Message must be between 1 and 150 characters.")]
