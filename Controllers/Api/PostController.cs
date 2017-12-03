@@ -13,7 +13,7 @@ using System.Net;
 using Barker.Models.PostViewModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Barker.Controllers
+namespace Barker.Api.Controllers
 {
     public class PostController : Controller
     {
