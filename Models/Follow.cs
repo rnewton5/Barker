@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Barker.Models
 {
-    public class Following
+    public class Follow
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string FollowingId { get; set; }
+        public string FolloweeId { get; set; }
 
         [ForeignKey("Follower")]
         public string FollowerId { get; set; }

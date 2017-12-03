@@ -17,6 +17,6 @@ namespace Barker.Models
 
         // Navigation properties
         public List<Post> Posts { get; set; }
-        public ICollection<Following> Followings { get; set; }
+        public ICollection<Follow> Followees { get; set; }
     }
 }
