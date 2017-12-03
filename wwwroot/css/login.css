@@ -1,6 +1,6 @@
-body{
+body {
   background-image: url('https://static.pexels.com/photos/615060/pexels-photo-615060.jpeg');
-  background-size: cover;  
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
@@ -20,39 +20,39 @@ input {
   margin-top: 12px;
 }
 
-.guest-well{
+.guest-well {
   text-align: center;
 }
 
-.form-group{
+.form-group {
   margin-bottom: 5px;
 }
 
-@media (max-width: 992px){
-  .register-well{
+@media (max-width: 992px) {
+  .register-well {
     float: right;
   }
-
   .login-well {
     margin-bottom: 15px;
   }
 }
 
 .welcome-message {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 footer {
-    color: #ffffff;
+  color: #ffffff;
 }
 
+
 /* xs screens */
+
 @media screen and (max-width: 767px) {
-  .register-well{
+  .register-well {
     float: none;
     padding-bottom: 45px;
   }
-
   .login-well {
     margin-bottom: 20px;
   }
