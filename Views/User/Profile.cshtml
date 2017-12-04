@@ -15,9 +15,9 @@
       <!-- if the profile image exist, display it. otherwise display the default image -->
       <!-- <img class="profile-image" src=""> -->
     </a>
-    <div>
+    <div class="bio">
       <p>@Model.UserName</p>
-      <p>Bio: </p>
+      <p>Lorem ipsum dolor set</p>
       <p>Date Joined</p>
     </div>
   </div>
@@ -66,13 +66,23 @@
         </a>
       </div>
     </div>
-
-    @foreach (var bark in Model.Barks){
-      <div class="post">
+    @if (Model.Barks.Count > 0)
+    {
+      @foreach (var bark in Model.Barks)
+      {
+        <div class="post">
+          <hr>
+          <h4><a href="#" class="post-author">@bark.Author</a></h4>
+          <p>@bark.Message</p>
+          <h6 class="pull-right post-date">@bark.PostDate</h6>
+        </div>
+      }
+    } 
+    else 
+    {
+      <div>
         <hr>
-        <h4><a href="#">@bark.Author</a></h4>
-        <p>@bark.Message</p>
-        <h6 class="pull-right">@bark.PostDate</h6>
+        <p>There does not seem to be anything here</p>
       </div>
     }
     

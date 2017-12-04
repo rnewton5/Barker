@@ -7,71 +7,87 @@
 @await Html.PartialAsync("_Navbar", Model.PostVm)
 
 <div class="row">
-<div class="col-md-3 col-sm-4 profile-card">
-  <div class="profile-card-bubble"></div>
-  <a href="#">
-    <div class="profile-card-image-background">
-      <!-- if the profile image exist, display it. otherwise display the default image -->
-      <!-- <img class="profile-image" src=""> -->
+
+  <!-- Left Column -->
+  <div class="col-md-3 col-sm-4 profile-card">
+    <div class="profile-card-bubble"></div>
+    <a href="#">
+      <div class="profile-card-image-background">
+        <!-- if the profile image exist, display it. otherwise display the default image -->
+        <!-- <img class="profile-image" src=""> -->
+      </div>
+    </a>
+    <div class="profile-card-info">
+      <p class="profile-card-username">@Model.UserName</p>
     </div>
-  </a>
-  <div class="profile-card-info">
-    <p class="profile-card-handle">@Model.UserName</p>
+    <div class="row profile-card-notifications">
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Barks
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Following
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a class="profile-card-link" href="#">
+          <div>
+            Followers
+          </div>
+          <div>
+            0
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="row profile-card-notifications">
-    <div class="col-xs-4">
-      <a class="profile-card-link" href="#">
-        <div>
-          Barks
+
+  <!-- Center column -->
+  <div class="col-md-6 col-sm-8 feed">
+    <h4>
+      Something on your mind?
+    </h4>
+    @await Html.PartialAsync("_SubmitPostPartial", Model.PostVm)
+    @if (Model.Barks.Count > 0)
+    {
+      @foreach (var bark in Model.Barks)
+      {
+        <div class="post">
+          <hr>
+          <h4><a href="#" class="post-author">@bark.Author</a></h4>
+          <p>@bark.Message</p>
+          <h6 class="pull-right post-date">@bark.PostDate</h6>
         </div>
-        <div>
-          0
-        </div>
-      </a>
-    </div>
-    <div class="col-xs-4">
-      <a class="profile-card-link" href="#">
-        <div>
-          Following
-        </div>
-        <div>
-          0
-        </div>
-      </a>
-    </div>
-    <div class="col-xs-4">
-      <a class="profile-card-link" href="#">
-        <div>
-          Followers
-        </div>
-        <div>
-          0
-        </div>
-      </a>
+      }
+    } 
+    else 
+    {
+      <div>
+        <hr>
+        <p>There does not seem to be anything here</p>
+      </div>
+    }
+  </div>
+
+  <!-- Right column -->
+  <div class="col-md-3 col-sm-4 recommendations-box">
+    <h4>
+      <strong>Who to follow</strong>
+    </h4>
+    <div class="recommendations">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa eaque iste aliquam voluptates neque obcaecati quos dolores, officia corporis. Rerum repellat quae, inventore id odit repellendus adipisci facere voluptate ullam explicabo optio maiores facilis deleniti voluptates at saepe rem aut neque aliquid quo earum eum? Veniam ipsam numquam iste aut, id officia deserunt unde vel eaque voluptatum debitis optio nisi animi mollitia ad sunt dolor amet ut non, perspiciatis dignissimos? Ipsum voluptas culpa unde pariatur nobis, magni, fuga, reiciendis aliquid quidem tenetur rerum minima inventore minus voluptatibus debitis veritatis repellendus! Laboriosam inventore aperiam tempora deleniti? Eaque beatae et quod soluta sed quam amet rerum exercitationem laboriosam, ipsum recusandae ratione natus similique nam unde veniam quia repellendus impedit dolorem culpa, placeat dignissimos? Inventore nobis laboriosam dolorem consequuntur soluta eaque ea minima blanditiis nisi quos nam architecto natus nihil, deserunt iusto ratione perferendis, illo tempora vitae deleniti tenetur quidem. Autem, libero quibusdam?</p>
     </div>
   </div>
-</div>
-<div class="col-md-6 col-sm-8 feed">
-  <h4>
-    Something on your mind?
-  </h4>
-  @await Html.PartialAsync("_SubmitPostPartial", Model.PostVm)
-  @foreach (var bark in Model.Barks){
-    <div class="post">
-      <hr>
-      <h4><a href="#">@bark.Author</a></h4>
-      <p>@bark.Message</p>
-      <h6 class="pull-right">@bark.PostDate</h6>
-    </div>
-  }
-  
-</div>
-<div class="col-md-3 col-sm-4 recommendations-box">
-  <h4>
-    <strong>Who to follow</strong>
-  </h4>
-  <div class="recommendations">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa eaque iste aliquam voluptates neque obcaecati quos dolores, officia corporis. Rerum repellat quae, inventore id odit repellendus adipisci facere voluptate ullam explicabo optio maiores facilis deleniti voluptates at saepe rem aut neque aliquid quo earum eum? Veniam ipsam numquam iste aut, id officia deserunt unde vel eaque voluptatum debitis optio nisi animi mollitia ad sunt dolor amet ut non, perspiciatis dignissimos? Ipsum voluptas culpa unde pariatur nobis, magni, fuga, reiciendis aliquid quidem tenetur rerum minima inventore minus voluptatibus debitis veritatis repellendus! Laboriosam inventore aperiam tempora deleniti? Eaque beatae et quod soluta sed quam amet rerum exercitationem laboriosam, ipsum recusandae ratione natus similique nam unde veniam quia repellendus impedit dolorem culpa, placeat dignissimos? Inventore nobis laboriosam dolorem consequuntur soluta eaque ea minima blanditiis nisi quos nam architecto natus nihil, deserunt iusto ratione perferendis, illo tempora vitae deleniti tenetur quidem. Autem, libero quibusdam?</p>
-  </div>
-</div>
 </div>
