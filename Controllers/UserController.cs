@@ -33,7 +33,6 @@ namespace Barker.Controllers
 
             var user = _userManager.GetUserAsync(HttpContext.User);
             ProfileViewModel model = new ProfileViewModel() {
-                Name = user.Result.Name,
                 UserName = user.Result.UserName,
                 PostVm = new PostViewModel(),
                 Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
@@ -57,7 +56,6 @@ namespace Barker.Controllers
                 return RedirectToAction(nameof(Home));
             }
             ProfileViewModel model = new ProfileViewModel() {
-                Name = user.Name,
                 UserName = user.UserName,
                 PostVm = new PostViewModel(),
                 Barks = _context.Posts.Where(x => x.User == user)

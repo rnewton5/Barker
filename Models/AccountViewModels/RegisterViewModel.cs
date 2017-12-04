@@ -9,11 +9,6 @@ namespace Barker.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Full Name")]
-        [StringLength(50, MinimumLength = 2)]
-        public string Name { get; set; }
-
-        [Required]
         [Display(Name = "User Name")]
         [StringLength(25, MinimumLength = 3)]
         public string UserName { get; set; }

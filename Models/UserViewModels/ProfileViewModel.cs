@@ -9,7 +9,6 @@ namespace Barker.Models.UserViewModels
 {
     public class ProfileViewModel
     {
-        public string Name { get; set; }
         public string UserName { get; set; }
 
         public PostViewModel PostVm { get; set; }

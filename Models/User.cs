@@ -10,11 +10,6 @@ namespace Barker.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class User : IdentityUser
     {
-        // data
-        [Required]
-        [StringLength(50, MinimumLength = 2)]
-        public string Name { get; set; }
-
         // Navigation properties
         public List<Post> Posts { get; set; }
         public ICollection<Follow> Followees { get; set; }
