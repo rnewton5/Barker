@@ -38,13 +38,12 @@ namespace Barker.Controllers
             int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Result.Id).Count();
             int likesCount = _context.Likes.Where(l => l.UserId == user.Result.Id).Count();
 
-            ProfileViewModel model = new ProfileViewModel() {
+            HomeViewModel model = new HomeViewModel() {
                 UserName = userName,
                 BarksCount = barksCount,
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 PostVm = new PostViewModel(),
-                JoinDate = DateTime.Now,
                 Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
@@ -77,6 +76,7 @@ namespace Barker.Controllers
                 BarksCount = barksCount,
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
+                LikesCount = likesCount,
                 PostVm = new PostViewModel(),
                 JoinDate = DateTime.Now,
                 Barks = _context.Posts.Where(x => x.User == user)

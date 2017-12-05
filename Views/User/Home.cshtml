@@ -1,4 +1,4 @@
-﻿@model Barker.Models.UserViewModels.ProfileViewModel
+﻿@model Barker.Models.UserViewModels.HomeViewModel
 
 @{
   ViewData["Title"] = "Home Page";
@@ -11,7 +11,7 @@
   <!-- Left Column -->
   <div class="col-md-3 col-sm-4 profile-card">
     <div class="profile-card-bubble"></div>
-    <a href="#">
+    <a  asp-controller="User" asp-action="Profile">
       <div class="profile-card-image-background">
         <!-- if the profile image exist, display it. otherwise display the default image -->
         <!-- <img class="profile-image" src=""> -->
