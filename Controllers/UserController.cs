@@ -78,7 +78,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 PostVm = new PostViewModel(),
-                JoinDate = DateTime.Now,
+                JoinDate = user.JoinDate,
                 Barks = _context.Posts.Where(x => x.User == user)
                             .OrderByDescending(x => x.PostDate).Take(10).ToList()
             };

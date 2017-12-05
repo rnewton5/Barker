@@ -93,7 +93,8 @@ namespace Barker.Controllers
             {
                 var user = new User {  
                     UserName = model.UserName, 
-                    Email = model.Email
+                    Email = model.Email,
+                    JoinDate = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

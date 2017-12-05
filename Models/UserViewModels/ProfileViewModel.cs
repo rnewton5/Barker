@@ -14,7 +14,6 @@ namespace Barker.Models.UserViewModels
         public int FollowingCount { get; set; }
         public int FollowersCount { get; set; }
         public int LikesCount { get; set; }
-
         public DateTime JoinDate { get; set; }
 
         public PostViewModel PostVm { get; set; }
