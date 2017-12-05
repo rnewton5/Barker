@@ -18,7 +18,7 @@
     <div class="bio">
       <p>@Model.UserName</p>
       <p>Lorem ipsum dolor set</p>
-      <p>Date Joined</p>
+      <p>Date Joined: @Model.JoinDate</p>
     </div>
   </div>
 
@@ -31,7 +31,7 @@
             Barks
           </div>
           <div>
-            0
+            @Model.BarksCount
           </div>
         </a>
       </div>
@@ -41,7 +41,7 @@
             Following
           </div>
           <div>
-            0
+            @Model.FollowingCount
           </div>
         </a>
       </div>
@@ -51,7 +51,7 @@
             Followers
           </div>
           <div>
-            0
+            @Model.FollowersCount
           </div>
         </a>
       </div>
@@ -61,7 +61,7 @@
             Likes
           </div>
           <div>
-            0
+            @Model.LikesCount
           </div>
         </a>
       </div>
@@ -72,7 +72,7 @@
       {
         <div class="post">
           <hr>
-          <h4><a href="#" class="post-author">@bark.Author</a></h4>
+          <h4><a asp-action="Profile" asp-route-userName="@bark.Author" class="post-author">@bark.Author</a></h4>
           <p>@bark.Message</p>
           <h6 class="pull-right post-date">@bark.PostDate</h6>
         </div>

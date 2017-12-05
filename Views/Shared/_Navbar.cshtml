@@ -53,7 +53,7 @@
             <span class="glyphicon glyphicon-user thumbnail hoverable" aria-hidden="true"></span>
           </a>
           <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-            <li><a role="menuitem" tabindex="-1" href="User/Profile/@UserManager.GetUserName(User)">Hello @UserManager.GetUserName(User)!</a></li>
+            <li><a role="menuitem" tabindex="-1" asp-controller="User" asp-action="Profile">Hello @UserManager.GetUserName(User)!</a></li>
             <li class="divider"></li>
             <li><a role="menuitem" tabindex="-1" asp-area="" asp-controller="Account" asp-action="Manage">Settings</a></li>
             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" >
