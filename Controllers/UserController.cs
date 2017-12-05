@@ -32,9 +32,19 @@ namespace Barker.Controllers
             }
 
             var user = _userManager.GetUserAsync(HttpContext.User);
+            string userName = user.Result.UserName;
+            int barksCount = _context.Posts.Where(p => p.Author == userName).Count();
+            int followingCount = _context.Follows.Where(f => f.FollowerId == user.Result.Id).Count();
+            int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Result.Id).Count();
+            int likesCount = _context.Likes.Where(l => l.UserId == user.Result.Id).Count();
+
             ProfileViewModel model = new ProfileViewModel() {
-                UserName = user.Result.UserName,
+                UserName = userName,
+                BarksCount = barksCount,
+                FollowingCount = followingCount,
+                FollowersCount = followersCount,
                 PostVm = new PostViewModel(),
+                JoinDate = DateTime.Now,
                 Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
 
@@ -47,20 +57,32 @@ namespace Barker.Controllers
             {
                 return RedirectToAction("LoginOrRegister", "Account");
             }
-            if(userName == null){
-                return RedirectToAction(nameof(Home));
+            if(userName == null || userName == ""){
+                userName = _userManager.GetUserName(User);
             }
             var user = _context.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).SingleOrDefault();
             if (user == null) {
                 TempData["error"] = "Unable to find user " + userName + ".";
                 return RedirectToAction(nameof(Home));
             }
+
+            string realUserName = user.UserName;
+            int barksCount = _context.Posts.Where(p => p.Author == userName).Count();
+            int followingCount = _context.Follows.Where(f => f.FollowerId == user.Id).Count();
+            int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Id).Count();
+            int likesCount = _context.Likes.Where(l => l.UserId == user.Id).Count();
+
             ProfileViewModel model = new ProfileViewModel() {
-                UserName = user.UserName,
+                UserName = realUserName,
+                BarksCount = barksCount,
+                FollowingCount = followingCount,
+                FollowersCount = followersCount,
                 PostVm = new PostViewModel(),
+                JoinDate = DateTime.Now,
                 Barks = _context.Posts.Where(x => x.User == user)
                             .OrderByDescending(x => x.PostDate).Take(10).ToList()
             };
+
             return View(model);
         }
 
