@@ -1,0 +1,21 @@
+@model IEnumerable<Barker.Models.Post>
+
+@if (Model.Count() > 0)
+    {
+      @foreach (var bark in Model)
+      {
+        <div class="post">
+          <hr>
+          <h4><a asp-action="Profile" asp-route-userName="@bark.Author" class="post-author">@bark.Author</a></h4>
+          <p>@bark.Message</p>
+          <h6 class="pull-right post-date">@bark.PostDate</h6>
+        </div>
+      }
+    } 
+    else 
+    {
+      <div>
+        <hr>
+        <p>There does not seem to be anything here</p>
+      </div>
+    }
