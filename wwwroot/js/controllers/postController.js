@@ -1,8 +1,9 @@
 var postsContainer = document.getElementById("posts-container");
+var userName = document.getElementById("userName").value;
 
 (function() {
     var request = new XMLHttpRequest();
-    request.open('GET', "Post/GetPosts");
+    request.open('GET', "/Post/GetPosts/" + userName);
     request.onload = function() {
         var jsonData = JSON.parse(request.responseText);
         initialLoad(jsonData);

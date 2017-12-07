@@ -1,4 +1,4 @@
-@model IEnumerable<Barker.Models.Post>
+@model string
 
 <div id="posts-container">
   <div>
@@ -7,4 +7,5 @@
   </div>
 </div>
 
-<script src="~/js/controllers/postController.js"></script>
+<input type="hidden" id="userName" value="@Model">
+<script type="text/javascript" src="~/js/controllers/postController.js"></script>

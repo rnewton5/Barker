@@ -43,8 +43,7 @@ namespace Barker.Controllers
                 BarksCount = barksCount,
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
-                PostVm = new PostViewModel(),
-                Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList()
+                PostVm = new PostViewModel()
             };
 
             return View(model);
@@ -78,9 +77,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 PostVm = new PostViewModel(),
-                JoinDate = user.JoinDate,
-                Barks = _context.Posts.Where(x => x.User == user)
-                            .OrderByDescending(x => x.PostDate).Take(10).ToList()
+                JoinDate = user.JoinDate
             };
 
             return View(model);

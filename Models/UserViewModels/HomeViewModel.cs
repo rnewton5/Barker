@@ -15,6 +15,5 @@ namespace Barker.Models.UserViewModels
         public int FollowersCount { get; set; }
 
         public PostViewModel PostVm { get; set; }
-        public List<Post> Barks { get; set; }
     }
 }

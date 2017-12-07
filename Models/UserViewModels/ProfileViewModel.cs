@@ -17,6 +17,5 @@ namespace Barker.Models.UserViewModels
         public DateTime JoinDate { get; set; }
 
         public PostViewModel PostVm { get; set; }
-        public List<Post> Barks { get; set; }
     }
 }
