@@ -119,7 +119,7 @@ namespace Barker.Api.Controllers
                     // THIS IS A TEMPORARY SOLUTION
                     // In the final product it will only get the barks by people you follow
                     Response.StatusCode = (int)HttpStatusCode.OK;
-                    return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToList() });
+                    return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToArray() });
                 }
             }
             catch (Exception e)
