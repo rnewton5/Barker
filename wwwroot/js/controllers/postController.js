@@ -1,5 +1,5 @@
 var postsContainer = document.getElementById("posts-container");
-var userName = document.getElementById("userName").value;
+var userName = document.getElementById("user-name").value;
 
 (function() {
     var request = new XMLHttpRequest();
