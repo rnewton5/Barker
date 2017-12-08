@@ -28,7 +28,7 @@ namespace Barker.Api.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> SubmitPost(PostViewModel model, string returnUrl)
+        public async Task<JsonResult> SubmitPost(PostViewModel model)
         {
             if (!User.Identity.IsAuthenticated)
             {

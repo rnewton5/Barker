@@ -123,14 +123,14 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" asp-controller="Post" asp-action="SubmitPost">
+      <form method="post" asp-controller="Post" asp-action="SubmitPost" class="submit-post-form">
         <div class="modal-body">
           <span asp-validation-for="Message" class="text-danger"></span>
           <textarea asp-for="Message" class="modal-textarea" placeholder="Enter your Bark here!"></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button submit" class="btn btn-primary">Bark</button>
+          <button type="button submit" class="btn btn-primary" id="modal-submit-btn">Bark</button>
         </div>
       </form>
     </div>
