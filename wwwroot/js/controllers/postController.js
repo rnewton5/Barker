@@ -1,7 +1,8 @@
 var postsContainer = document.getElementById("posts-container");
 var userName = document.getElementById("user-name").value;
-var earliestPostId = -1;
+var lastPostId = -1;
 var LastRequestTime = 0;
+var outOfPosts = false;
 
 // starts a request as soon as the file loads
 (function() {
@@ -10,8 +11,9 @@ var LastRequestTime = 0;
 
 // sends a request to the server for more posts
 function initiateRequest() {
+    if (outOfPosts) return;
     var request = new XMLHttpRequest();
-    request.open('GET', "/Post/GetPosts/" + userName + "?earliestId=" + earliestPostId);
+    request.open('GET', "/Post/GetPosts/" + userName + "?lastId=" + lastPostId);
     request.onload = function() {
         var jsonData = JSON.parse(request.responseText);
         loadMorePosts(jsonData);
@@ -30,9 +32,10 @@ function loadMorePosts(data){
                 + "<p>" + htmlEntities(data.barks[i].message) + "</p>"
                 + "<h6 class='pull-right post-date'>" + data.barks[i].postDate + "</h6></div>";
         }
-        earliestPostId = data.barks[data.barks.length-1].id;
+        lastPostId = data.barks[data.barks.length-1].id;
     } else {
-        htmlString = "<div><hr><p>There does not seem to be anything here...</p></div>"
+        htmlString = "<div><hr><p>There is no more to be seen.</p></div>"
+        outOfPosts = true;
     }
     postsContainer.insertAdjacentHTML('beforeend', htmlString);
 }

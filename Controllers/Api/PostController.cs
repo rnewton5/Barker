@@ -89,10 +89,12 @@ namespace Barker.Api.Controllers
         }
 
         //TODO: update this method to work more dynamically
-        public async Task<JsonResult> GetPosts(string userName)
+        public async Task<JsonResult> GetPosts(string userName, string lastId)
         {
             try
             {
+                int latestId = int.Parse(lastId);
+                latestId = latestId < 0 ? int.MaxValue : latestId;
                 // if userName is not null, get the posts exclusively from that user.
                 // if it is null, get posts for the feed of the currently logged in user
                 if (userName != null)
@@ -108,10 +110,10 @@ namespace Barker.Api.Controllers
                     {
                         Barks = _context.Posts
                                     .AsNoTracking()
-                                    .Where(x => x.Author == userName)
+                                    .Where(x => x.Author == userName && x.Id < latestId)
                                     .OrderByDescending(x => x.PostDate)
                                     .Take(10)
-                                    .ToList()
+                                    .ToArray()
                     });
                 }
                 else
@@ -119,7 +121,12 @@ namespace Barker.Api.Controllers
                     // THIS IS A TEMPORARY SOLUTION
                     // In the final product it will only get the barks by people you follow
                     Response.StatusCode = (int)HttpStatusCode.OK;
-                    return Json(new { Barks = _context.Posts.OrderByDescending(x => x.PostDate).Take(10).ToArray() });
+                    return Json(new { Barks = _context.Posts
+                                    .AsNoTracking()
+                                    .Where(x => x.Id < latestId)
+                                    .OrderByDescending(x => x.PostDate)
+                                    .Take(10)
+                                    .ToArray() });
                 }
             }
             catch (Exception e)
