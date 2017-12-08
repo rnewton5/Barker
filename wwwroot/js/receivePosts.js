@@ -48,7 +48,7 @@ function loadMorePosts(data){
         }
         lastPostId = data.barks[data.barks.length-1].id;
     } else {
-        htmlString = "<div><hr><p>There is no more to be seen.</p></div>"
+        htmlString = "<div><hr><p>There are no more posts to be seen.</p></div>"
         outOfPosts = true;
     }
     postsContainer.insertAdjacentHTML('beforeend', htmlString);
