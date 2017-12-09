@@ -62,21 +62,19 @@ namespace Barker.Controllers
         {    
             if (ModelState.IsValid)
             {
-                string userName = _context.Users.Where(x => x.Email == model.Email).SingleOrDefault().UserName;
-                var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                if(_context.Users.Any(x => x.Email == model.Email))
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToAction(nameof(UserController.Home), "User");
-                }
-                /*if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }*/
-                else
-                {
-                    TempData["info"] = "Invalid login attempt.";
-                    return RedirectToAction(nameof(LoginOrRegister));
+                    string userName = _context.Users.Where(x => x.Email == model.Email).SingleOrDefault().UserName;
+                    var result = await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToAction(nameof(UserController.Home), "User");
+                    }
+                    /*if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    }*/
                 }
             }            
             // If we got this far, something failed, redisplay form
