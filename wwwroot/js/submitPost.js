@@ -11,6 +11,7 @@ $("#submit-post-button").click(function(event) {
     posting.done(function(data) {
         displayMessage(data.message);
         $('#barkModal').modal( 'hide' );
+        $('.bark-textarea').val('');
     })
 })
 
@@ -27,5 +28,6 @@ $("#modal-submit-btn").click(function(event) {
     posting.done(function(data) {
         displayMessage(data.message);
         $('#barkModal').modal( 'hide' );
+        $('.modal-textarea').val('');
     })
 })
