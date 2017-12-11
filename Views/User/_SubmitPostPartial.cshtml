@@ -1,7 +1,7 @@
 @model Barker.Models.PostViewModels.PostViewModel
 
-<form method="post" asp-controller="Post" asp-action="SubmitPost" class="submit-post-form">
+<form method="post" asp-controller="Post" id="submit-post-form" asp-action="SubmitPost" class="submit-post-form">
   <span asp-validation-for="Message" class="text-danger"></span>
   <textarea name='Message' asp-for="Message" class="bark-textarea" placeholder="Enter your Bark here."></textarea>
-  <button type="submit" class="btn btn-md btn-info pull-right">Bark</button>
+  <button type="submit" id="submit-post-button" class="btn btn-md btn-info pull-right submit-post-button">Bark</button>
 </form>
