@@ -9,7 +9,7 @@ $(".submit-post-form").click(function(event) {
     var posting = $.post( url, model);
 
     posting.done(function(data) {
-        console.log(data);
-        $('#barkModal').modal( 'hide' )
+        displayMessage(data.message);
+        $('#barkModal').modal( 'hide' );
     })
 })
