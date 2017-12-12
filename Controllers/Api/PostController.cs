@@ -118,12 +118,14 @@ namespace Barker.Controllers.Api
                 }
                 else
                 {
-                    // THIS IS A TEMPORARY SOLUTION
-                    // In the final product it will only get the barks by people you follow
                     Response.StatusCode = (int)HttpStatusCode.OK;
+
+                    // getting the list of ids for the users that that are being followed
+                    List<string> userFollowsIds = _context.Follows.Where(x => x.FollowerId == _userManager.GetUserId(User)).Select(x => x.FolloweeId).ToList();
                     return Json(new { Barks = _context.Posts
                                     .AsNoTracking()
                                     .Where(x => x.Id < latestId)
+                                    .Where(x => x.UserId == _userManager.GetUserId(User) || userFollowsIds.Contains(x.UserId))
                                     .OrderByDescending(x => x.PostDate)
                                     .Take(10)
                                     .ToArray() });
