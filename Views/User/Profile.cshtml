@@ -20,7 +20,10 @@
       <p>Lorem ipsum dolor set</p>
       <p>Date Joined: @Model.JoinDate</p>
     </div>
-    <button type="button" class="btn btn-warning">Follow</button>
+    @{string followMessage = @Model.IsFollowing? "- Unfollow" : "+ Follow";}
+    <form asp-action="ToggleFollow" asp-controller="Follow" asp-route-userName="@Model.UserName" id="follow-form">
+      <button type="button submit" id="follow-button" class="btn btn-warning">@followMessage</button>
+    </form>
   </div>
 
   <!-- middle column -->

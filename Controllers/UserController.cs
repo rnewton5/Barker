@@ -69,6 +69,7 @@ namespace Barker.Controllers
             int followingCount = _context.Follows.Where(f => f.FollowerId == user.Id).Count();
             int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Id).Count();
             int likesCount = _context.Likes.Where(l => l.UserId == user.Id).Count();
+            bool isFollowing = _context.Follows.Any(f => f.FollowerId == _userManager.GetUserId(User) && f.FolloweeId == user.Id);
 
             ProfileViewModel model = new ProfileViewModel() {
                 UserName = realUserName,
@@ -77,7 +78,8 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 PostVm = new PostViewModel(),
-                JoinDate = user.JoinDate
+                JoinDate = user.JoinDate,
+                IsFollowing = isFollowing
             };
 
             return View(model);

@@ -26,8 +26,8 @@ namespace Barker.Controllers.Api
             _userManager = userManager;
         }
 
-        [PreventSpam]
-        public async Task<JsonResult> ToggleFollow(string userName)
+        
+        public JsonResult ToggleFollow(string userName)
         {
             // Check if the user is signed in
             if (!User.Identity.IsAuthenticated)
@@ -37,7 +37,7 @@ namespace Barker.Controllers.Api
             }
 
             // if userName is null or if the user does not exist return error message
-            if (userName == null || !await _context.Users.AnyAsync(u => u.UserName == userName))
+            if (userName == null || !_context.Users.Any(u => u.UserName == userName))
             {
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return Json(new { Message = "Unable to find user" });
@@ -52,9 +52,9 @@ namespace Barker.Controllers.Api
                 // If the logged in user is already following the followee, unfollow. and vice versa
                 if (userFollows.Any(f => f.FolloweeId == followee.Id))
                 {
-                    var followToRemove = await _context.Follows.SingleAsync(f => f.FolloweeId == followee.Id);
-                    _context.Follows.Remove(followToRemove);
-                    await _context.SaveChangesAsync();
+                    var followToRemove = _context.Follows.Where(f => f.FolloweeId == followee.Id);
+                    _context.Follows.RemoveRange(followToRemove);
+                    _context.SaveChanges();
                     Response.StatusCode = (int)HttpStatusCode.OK;
                     return Json(new { Message = "Unfollowed!" });
                 }
@@ -66,7 +66,7 @@ namespace Barker.Controllers.Api
                         FolloweeId = followee.Id
                     };
                     _context.Follows.Add(follow);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                     return Json(new { Message = "Followed!" });
                 }

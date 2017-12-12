@@ -38,3 +38,21 @@ $("#modal-submit-btn").click(function(event) {
     $('.modal-textarea').val('');
   })
 })
+
+$("#follow-button").click(function(event) {
+  event.preventDefault();
+  var url = $("#follow-form").attr("action");
+
+  var request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.onload = function() {
+      var jsonData = JSON.parse(request.responseText);
+      displayMessage(jsonData.message);
+      if(jsonData.message == "Followed!") {
+        $("#follow-button").html('- Unfollow');
+      } else {
+        $("#follow-button").html('+ Follow');
+      }
+  }
+  request.send();
+})
