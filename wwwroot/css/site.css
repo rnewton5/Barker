@@ -58,12 +58,13 @@ body {
 
 .feed {
   background-color: #ffffff;
-  
 }
 
 .feed > form {
   margin-bottom: 38px;
 }
+
+
 
 
 /* recommendations */
@@ -81,6 +82,15 @@ body {
   overflow: scroll;
   overflow-x: hidden;
   background-color: #ffffff;
+}
+
+.recommendations > a{
+  color: #1da1f2;
+}
+
+.recommendations > a:hover{
+  text-decoration: none;
+  color: #3ddbd3;
 }
 
 

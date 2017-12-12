@@ -76,10 +76,19 @@
   <!-- right column -->
   <div class="col-md-3 col-sm-4 recommendations-box">
     <h4>
-      <strong>Who to follow</strong>
+      <strong>Check these people out!</strong>
     </h4>
     <div class="recommendations">
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa eaque iste aliquam voluptates neque obcaecati quos dolores, officia corporis. Rerum repellat quae, inventore id odit repellendus adipisci facere voluptate ullam explicabo optio maiores facilis deleniti voluptates at saepe rem aut neque aliquid quo earum eum? Veniam ipsam numquam iste aut, id officia deserunt unde vel eaque voluptatum debitis optio nisi animi mollitia ad sunt dolor amet ut non, perspiciatis dignissimos? Ipsum voluptas culpa unde pariatur nobis, magni, fuga, reiciendis aliquid quidem tenetur rerum minima inventore minus voluptatibus debitis veritatis repellendus! Laboriosam inventore aperiam tempora deleniti? Eaque beatae et quod soluta sed quam amet rerum exercitationem laboriosam, ipsum recusandae ratione natus similique nam unde veniam quia repellendus impedit dolorem culpa, placeat dignissimos? Inventore nobis laboriosam dolorem consequuntur soluta eaque ea minima blanditiis nisi quos nam architecto natus nihil, deserunt iusto ratione perferendis, illo tempora vitae deleniti tenetur quidem. Autem, libero quibusdam?</p>
+      <hr>
+      @foreach(var user in @Model.OtherUsers)
+      {
+        <a asp-action="Profile" asp-controller="User" asp-route-userName="@user">
+          <div>
+            <h4>@user</h4>
+            <hr>
+          </div>
+        </a>
+      }
     </div>
   </div>
 </div>

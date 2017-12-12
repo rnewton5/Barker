@@ -41,7 +41,7 @@ function loadMorePosts(data){
     if (data.barks.length > 0){
         for(i = 0; i < data.barks.length; i++) {
             htmlString += "<div class='post'><hr><h4>"
-                + "<a href='User/Profile/" + data.barks[i].author + "'>"
+                + "<a class='post-author' href='/User/Profile/" + data.barks[i].author + "'>"
                 + data.barks[i].author + "</a></h4>"
                 + "<p>" + htmlEntities(data.barks[i].message) + "</p>"
                 + "<h6 class='pull-right post-date'>" + data.barks[i].postDate + "</h6></div>";
