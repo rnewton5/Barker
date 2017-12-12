@@ -56,3 +56,18 @@ $("#follow-button").click(function(event) {
   }
   request.send();
 })
+
+function likeClick(url, postIdClass) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.onload = function() {
+      var jsonData = JSON.parse(request.responseText);
+      displayMessage(jsonData.message);
+      if(jsonData.message == "Liked!"){
+        $(postIdClass).children().css({"color": "red"});
+      } else {
+        $(postIdClass).children().css({"color": "gray"});
+      }
+  }
+  request.send();
+}

@@ -26,7 +26,7 @@ namespace Barker.Controllers.Api
             _userManager = userManager;
         }
 
-        public async Task<JsonResult> ToggleLike(int? postId)
+        public JsonResult ToggleLike(int? postId)
         {
             // Check if the user is signed in
             if (!User.Identity.IsAuthenticated)
@@ -55,11 +55,11 @@ namespace Barker.Controllers.Api
             try
             {
                 // If the user Has already liked the post, we unlike it. and vice versa
-                if (postLikes.Any(l => l.UserId == _userManager.GetUserId(User)))
+                if (postLikes.Any(l => l.UserId == _userManager.GetUserId(User) && l.PostId == postId))
                 {
-                    var likeToRemove = await _context.Likes.SingleAsync(l => l.UserId == _userManager.GetUserId(User));
-                    _context.Likes.Remove(likeToRemove);
-                    await _context.SaveChangesAsync();
+                    var likeToRemove = _context.Likes.Where(l => l.UserId == _userManager.GetUserId(User) && l.PostId == postId);
+                    _context.Likes.RemoveRange(likeToRemove);
+                    _context.SaveChanges();
                     Response.StatusCode = (int)HttpStatusCode.OK;
                     return Json(new { Message = "Unliked!" });
                 }
@@ -68,10 +68,10 @@ namespace Barker.Controllers.Api
                     Like like = new Like()
                     {
                         UserId = _userManager.GetUserId(User),
-                        Post = await _context.Posts.SingleAsync(p => p.Id == postId)
+                        Post = _context.Posts.Single(p => p.Id == postId)
                     };
                     _context.Likes.Add(like);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     Response.StatusCode = (int)HttpStatusCode.Created;
                     return Json(new { Message = "Liked!" });
                 }

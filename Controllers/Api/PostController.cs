@@ -113,7 +113,12 @@ namespace Barker.Controllers.Api
                                     .Where(x => x.Author == userName && x.Id < latestId)
                                     .OrderByDescending(x => x.PostDate)
                                     .Take(10)
-                                    .ToArray()
+                                    .ToArray(),
+                                Likes = _context.Likes
+                                    .AsNoTracking()
+                                    .Where(x => x.UserId == _userManager.GetUserId(User))
+                                    .Select(x => x.PostId)
+                                    .ToArray() 
                     });
                 }
                 else
@@ -128,7 +133,13 @@ namespace Barker.Controllers.Api
                                     .Where(x => x.UserId == _userManager.GetUserId(User) || userFollowsIds.Contains(x.UserId))
                                     .OrderByDescending(x => x.PostDate)
                                     .Take(10)
-                                    .ToArray() });
+                                    .ToArray(),
+                                Likes = _context.Likes
+                                    .AsNoTracking()
+                                    .Where(x => x.UserId == _userManager.GetUserId(User))
+                                    .Select(x => x.PostId)
+                                    .ToArray() 
+                    });
                 }
             }
             catch (Exception e)

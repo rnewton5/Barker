@@ -40,11 +40,7 @@ function loadMorePosts(data){
     var htmlString = "";
     if (data.barks.length > 0){
         for(i = 0; i < data.barks.length; i++) {
-            htmlString += "<div class='post'><hr><h4>"
-                + "<a class='post-author' href='/User/Profile/" + data.barks[i].author + "'>"
-                + data.barks[i].author + "</a></h4>"
-                + "<p>" + htmlEntities(data.barks[i].message) + "</p>"
-                + "<h6 class='pull-right post-date'>" + data.barks[i].postDate + "</h6></div>";
+            htmlString += buildPostHtml(data.barks[i], data.likes);
         }
         lastPostId = data.barks[data.barks.length-1].id;
     } else {
@@ -52,6 +48,19 @@ function loadMorePosts(data){
         outOfPosts = true;
     }
     postsContainer.insertAdjacentHTML('beforeend', htmlString);
+}
+
+// takes a post object and builds and returns html from the contents
+function buildPostHtml(post, likes) {
+    var heartStyle = $.inArray(post.id, likes) != -1 ? "style='color: #f00;'" : "";
+    return "<div class='post'><hr><h4>"
+        + "<a class='post-author' href='/User/Profile/" + post.author + "'>"
+        + post.author + "</a></h4>"
+        + "<p>" + htmlEntities(post.message) + "</p><div class='pull-left'>"
+        + "<a class='post" + post.id + "' onClick='likeClick(\"/Like/ToggleLike?postId=" + post.id + "\",\".post" + post.id + "\")'>"
+        + "<span class='glyphicon glyphicon-heart'" + heartStyle
+        + "></span></a></div>"
+        + "<h6 class='pull-right post-date'>" + post.postDate + "</h6></div>"; 
 }
 
 // replaces characters in a string so that it can be properly displayed and returns it.
