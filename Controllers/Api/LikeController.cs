@@ -13,7 +13,7 @@ using System.Net;
 using Barker.Models.PostViewModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Barker.Api.Controllers
+namespace Barker.Controllers.Api
 {
     public class LikeController : Controller
     {

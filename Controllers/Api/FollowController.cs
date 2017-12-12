@@ -13,7 +13,7 @@ using System.Net;
 using Barker.Models.PostViewModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Barker.Api.Controllers
+namespace Barker.Controllers.Api
 {
     public class FollowController : Controller
     {
@@ -26,6 +26,7 @@ namespace Barker.Api.Controllers
             _userManager = userManager;
         }
 
+        [PreventSpam]
         public async Task<JsonResult> ToggleFollow(string userName)
         {
             // Check if the user is signed in
