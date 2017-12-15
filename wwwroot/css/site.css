@@ -26,7 +26,7 @@ body {
 /* post */
 
 .post {
-  margin-bottom: 45px;
+  margin-bottom: 10px;
 }
 
 .post-author{
@@ -36,6 +36,17 @@ body {
 .post-author:hover{
   color: #3ddbd3;
   text-decoration: none;
+  display: inline;
+}
+
+.like-post-button {
+  margin-right: 15px;
+  font-size: 1.0em;
+  display: inline-block;
+}
+
+.follow-button {
+  display: inline;
 }
 
 .post-date{

@@ -13,6 +13,7 @@ namespace Barker.Models.UserViewModels
         public int BarksCount { get; set; }
         public int FollowingCount { get; set; }
         public int FollowersCount { get; set; }
+        public ICollection<string> Following { get; set; }
         public ICollection<string> OtherUsers { get; set; }
 
         public PostViewModel PostVm { get; set; }

@@ -39,9 +39,9 @@ $("#modal-submit-btn").click(function(event) {
   })
 })
 
-$("#follow-button").click(function(event) {
+$('body').on("click", ".follow-button", function(event){
   event.preventDefault();
-  var url = $("#follow-form").attr("action");
+  var url = $(this).attr("href");
 
   var request = new XMLHttpRequest();
   request.open('GET', url);
@@ -49,25 +49,30 @@ $("#follow-button").click(function(event) {
       var jsonData = JSON.parse(request.responseText);
       displayMessage(jsonData.message);
       if(jsonData.message == "Followed!") {
-        $("#follow-button").html('- Unfollow');
+        $('a[href="' + url + '"]').html("- Unfollow");
       } else {
-        $("#follow-button").html('+ Follow');
+        $('a[href="' + url + '"]').html("+ Follow");
       }
   }
   request.send();
 })
 
-function likeClick(url, postIdClass) {
+$('body').on("click", ".like-post-button", function(event){
+  event.preventDefault();
+  var caller = $(this);
+  var url = caller.attr("href");
+
   var request = new XMLHttpRequest();
   request.open('GET', url);
   request.onload = function() {
       var jsonData = JSON.parse(request.responseText);
       displayMessage(jsonData.message);
       if(jsonData.message == "Liked!"){
-        $(postIdClass).children().css({"color": "red"});
+        caller.css({"color": "red"});
       } else {
-        $(postIdClass).children().css({"color": "gray"});
+        caller.css({"color": "gray"});
       }
   }
   request.send();
-}
+})
+

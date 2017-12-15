@@ -38,6 +38,8 @@ namespace Barker.Controllers
             int followingCount = _context.Follows.Where(f => f.FollowerId == user.Result.Id).Count();
             int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Result.Id).Count();
             int likesCount = _context.Likes.Where(l => l.UserId == user.Result.Id).Count();
+            var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
+            following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
 
             HomeViewModel model = new HomeViewModel() {
@@ -46,6 +48,7 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 PostVm = new PostViewModel(),
+                Following = following,
                 OtherUsers = userNames
             };
 
@@ -68,12 +71,14 @@ namespace Barker.Controllers
             }
             Random random = new Random();
 
+
             string realUserName = user.UserName;
             int barksCount = _context.Posts.Where(p => p.Author == userName).Count();
             int followingCount = _context.Follows.Where(f => f.FollowerId == user.Id).Count();
             int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Id).Count();
             int likesCount = _context.Likes.Where(l => l.UserId == user.Id).Count();
-            bool isFollowing = _context.Follows.Any(f => f.FollowerId == _userManager.GetUserId(User) && f.FolloweeId == user.Id);
+            var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
+            following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
 
             ProfileViewModel model = new ProfileViewModel() {
@@ -84,7 +89,7 @@ namespace Barker.Controllers
                 LikesCount = likesCount,
                 PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
-                IsFollowing = isFollowing,
+                Following = following,
                 OtherUsers = userNames
             };
 

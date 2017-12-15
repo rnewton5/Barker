@@ -53,13 +53,14 @@ function loadMorePosts(data){
 // takes a post object and builds and returns html from the contents
 function buildPostHtml(post, likes) {
     var heartStyle = $.inArray(post.id, likes) != -1 ? "style='color: #f00;'" : "";
+    //var followMessage = $.inArray(post.author, follows) != -1 ? "+ Follow" : "- Unfollow";
     return "<div class='post'><hr><h4>"
         + "<a class='post-author' href='/User/Profile/" + post.author + "'>"
         + post.author + "</a></h4>"
         + "<p>" + htmlEntities(post.message) + "</p><div class='pull-left'>"
-        + "<a class='post" + post.id + "' onClick='likeClick(\"/Like/ToggleLike?postId=" + post.id + "\",\".post" + post.id + "\")'>"
-        + "<span class='glyphicon glyphicon-heart'" + heartStyle
-        + "></span></a></div>"
+        + "<a href='/Like/ToggleLike?postid=" + post.id + "' class='like-post-button' " + heartStyle + ">"
+        + "<span class='glyphicon glyphicon-heart'></span></a></div>"
+        + "<a class='follow-button btn btn-info' role='button' href='/Follow/ToggleFollow/" + post.author + "'>testing</a>"
         + "<h6 class='pull-right post-date'>" + post.postDate + "</h6></div>"; 
 }
 

@@ -72,12 +72,14 @@
       <hr>
       @foreach(var user in @Model.OtherUsers)
       {
-        <a asp-action="Profile" asp-controller="User" asp-route-userName="@user">
-          <div>
-            <h4>@user</h4>
-            <hr>
-          </div>
-        </a>
+        <div style="display: block;">
+          <a asp-action="Profile" asp-controller="User" asp-route-userName="@user">
+            <h4 style="display: inline; padding-top: 10px;">@user</h4>
+          </a>
+          @{string followMessage = Model.Following.Contains(user) ? "- Unfollow" : "+ Follow";}
+          <a style="margin-right: 5px;" asp-action="ToggleFollow" asp-controller="Follow" asp-route-userName="@user" role="button" class="follow-button btn btn-warning pull-right">@followMessage</a>
+        </div>
+        <hr>
       }
     </div>
   </div>
