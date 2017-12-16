@@ -23,7 +23,6 @@ namespace Barker.Controllers
             _userManager = userManager;
         }
 
-        [Route("")]
         public IActionResult Index(string searchTerm)
         {
             if (searchTerm == null)
