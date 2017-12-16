@@ -27,7 +27,7 @@ namespace Barker.Controllers
         public IActionResult Index(string searchTerm)
         {
             if (searchTerm == null)
-                searchTerm = "";
+                return View(new SearchViewModel() { Users = new List<UserSearchItem>() });
             var loggedInUserId = _userManager.GetUserId(User);
             var matchingUsers = _context.Users.Where(u => u.UserName.ToLower().Contains(searchTerm.ToLower())).ToList();
             var SearchVm = new SearchViewModel() { Users = new List<UserSearchItem>() };
