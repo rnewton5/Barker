@@ -85,15 +85,30 @@ $('body').on("click", ".like-post-button", function(event){
   request.send();
 })
 
-/* edit post modal functions */
+$('body').on("click", ".delete-post-button", function(event) {
+  event.preventDefault();
+  var url = $(this).attr("href");
+  var postToDelete = $(this).parent('.post');
 
+  var request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.onload = function() {
+      var jsonData = JSON.parse(request.responseText);
+      displayMessage(jsonData.message);
+      if(jsonData.message == "Deleted!") {
+        $(postToDelete).remove();
+      }
+  }
+  request.send();
+})
+
+/* edit post modal functions */
 var postId;
-var editPostCaller;
 // displays the edit post modal
 $('body').on("click", ".edit-post-btn", function() {
-  var editPostCaller = $(this);
-  postId = editPostCaller.val();
-  var text = editPostCaller.parent('.post').find('p').text();
+  var caller = $(this);
+  postId = caller.val();
+  var text = caller.parent('.post').find('p').text();
   $('#edit-modal-textarea').val(text);
   $('#edit-modal').css({"display": "block"});
 })

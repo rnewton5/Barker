@@ -60,14 +60,17 @@ function loadMorePosts(data){
 function buildPostHtml(post, likesPost, following, owner) {
     var heartStyle = likesPost ? "style='color: #f00;'" : "";
     var followButton;
-    var editButton
+    var editButton;
+    var deleteButton;
     if (owner) {
-        var editButton = "<button class='edit-post-btn btn btn-danger' value='" + post.id + "' role='button'>Edit</button>";
+        var editButton = "<button class='edit-post-btn btn btn-info' value='" + post.id + "' role='button'>Edit</button>";
+        var deleteButton = "<a class='delete-post-button btn btn-danger' role='button' href='/Post/DeletePost?postId=" + post.id + "'>Delete</a>"
         followButton = "";
     } else {
         var followMessage = following ? "- Unfollow" : "+ Follow";
         followButton = "<a class='follow-button btn btn-info' role='button' href='/Follow/ToggleFollow/" + post.author + "'>" + followMessage + "</a>";
         editButton = "";
+        deleteButton = "";
     }
     return "<div class='post'><hr><h4>"
         + "<a class='post-author' href='/User/Profile/" + post.author + "'>"
@@ -75,7 +78,7 @@ function buildPostHtml(post, likesPost, following, owner) {
         + "<p>" + htmlEntities(post.message) + "</p><div class='pull-left'>"
         + "<a href='/Like/ToggleLike?postid=" + post.id + "' class='like-post-button' " + heartStyle + ">"
         + "<span class='glyphicon glyphicon-heart'></span></a></div>"
-        + followButton + editButton
+        + followButton + editButton + deleteButton
         + "<h6 class='pull-right post-date'>" + post.postDate + "</h6></div>"; 
 }
 

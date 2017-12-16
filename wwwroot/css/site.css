@@ -40,19 +40,13 @@ body {
 }
 
 .like-post-button {
-  margin-right: 15px;
   font-size: 1.0em;
   display: inline-block;
 }
 
-.follow-button {
+.follow-button, .delete-post-button, .edit-post-btn {
+  margin-left: 10px;
   display: inline;
-  font-size: .75em;
-}
-
-.edit-post-btn {
-  display: inline;
-  margin-top: -5px;  
   font-size: .75em;
 }
 

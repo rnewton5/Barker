@@ -238,7 +238,7 @@ namespace Barker.Controllers.Api
                 _context.Posts.Remove(postToRemove);
                 await _context.SaveChangesAsync();
                 Response.StatusCode = (int)HttpStatusCode.OK;
-                return Json(new { Message = "Success!" });
+                return Json(new { Message = "Deleted!" });
             }
             catch (Exception e)
             {
