@@ -28,7 +28,11 @@ function initiateRequest() {
     request.open('GET', url + userName + "?lastId=" + lastPostId);
     request.onload = function() {
         var jsonData = JSON.parse(request.responseText);
-        loadMorePosts(jsonData);
+        if (request.status == 200){
+            loadMorePosts(jsonData.result);
+        } else {
+            console.log(jsonData.message);
+        }
     }
     request.send();
 }
@@ -38,11 +42,11 @@ function initiateRequest() {
 // more posts to display, and sets 'outOfPosts' to true.
 function loadMorePosts(data){
     var htmlString = "";
-    if (data.barks.length > 0){
-        for(i = 0; i < data.barks.length; i++) {
-            htmlString += buildPostHtml(data.barks[i], data.likes);
+    if (data.length > 0){
+        for(var i = 0; i < data.length; i++) {
+            htmlString += buildPostHtml(data[i].bark, data[i].likesPost, data[i].following, data[i].owner);
         }
-        lastPostId = data.barks[data.barks.length-1].id;
+        lastPostId = data[data.length-1].bark.id;
     } else {
         htmlString = "<div><hr><p>There are no more posts to be seen.</p></div>"
         outOfPosts = true;
@@ -50,17 +54,28 @@ function loadMorePosts(data){
     postsContainer.insertAdjacentHTML('beforeend', htmlString);
 }
 
-// takes a post object and builds and returns html from the contents
-function buildPostHtml(post, likes) {
-    var heartStyle = $.inArray(post.id, likes) != -1 ? "style='color: #f00;'" : "";
-    //var followMessage = $.inArray(post.author, follows) != -1 ? "+ Follow" : "- Unfollow";
+// takes a post object, a boolean dictating if the post has been liked,
+//     a boolean dictating the user is following the author, and a boolean 
+//     dictating if the user is the owner of the post.
+function buildPostHtml(post, likesPost, following, owner) {
+    var heartStyle = likesPost ? "style='color: #f00;'" : "";
+    var followButton;
+    var editButton
+    if (owner) {
+        var editButton = "<button class='edit-post-btn btn btn-danger' value='" + post.id + "' role='button'>Edit</button>";
+        followButton = "";
+    } else {
+        var followMessage = following ? "- Unfollow" : "+ Follow";
+        followButton = "<a class='follow-button btn btn-info' role='button' href='/Follow/ToggleFollow/" + post.author + "'>" + followMessage + "</a>";
+        editButton = "";
+    }
     return "<div class='post'><hr><h4>"
         + "<a class='post-author' href='/User/Profile/" + post.author + "'>"
         + post.author + "</a></h4>"
         + "<p>" + htmlEntities(post.message) + "</p><div class='pull-left'>"
         + "<a href='/Like/ToggleLike?postid=" + post.id + "' class='like-post-button' " + heartStyle + ">"
         + "<span class='glyphicon glyphicon-heart'></span></a></div>"
-        + "<a class='follow-button btn btn-info' role='button' href='/Follow/ToggleFollow/" + post.author + "'>testing</a>"
+        + followButton + editButton
         + "<h6 class='pull-right post-date'>" + post.postDate + "</h6></div>"; 
 }
 

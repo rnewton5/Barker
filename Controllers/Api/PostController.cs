@@ -17,6 +17,8 @@ namespace Barker.Controllers.Api
 {
     public class PostController : Controller
     {
+        private const int NUM_BARKS = 10;  // the number of posts to return at one time
+
         private readonly BarkerDbContext _context;
         private readonly UserManager<User> _userManager;
 
@@ -87,58 +89,83 @@ namespace Barker.Controllers.Api
                 return Json(new { Message = e.Message });
             }
         }
-
-        //TODO: update this method to work more dynamically
-        public async Task<JsonResult> GetPosts(string userName, string lastId)
+      
+        public JsonResult GetPosts(string userName, string lastId)
         {
             try
             {
                 int latestId = int.Parse(lastId);
                 latestId = latestId < 0 ? int.MaxValue : latestId;
+
                 // if userName is not null, get the posts exclusively from that user.
-                // if it is null, get posts for the feed of the currently logged in user
                 if (userName != null)
                 {
-                    var user = await _context.Users.AsNoTracking().SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
-                    if (user == null)
+                    // checking if a user exists with the userName provided
+                    if (!_context.Users.Any(x => x.UserName.ToLower() == userName.ToLower()))
                     {
                         Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         return Json(new { Message = "Unable to find user " + userName });
                     }
+
+                    // if the user does exist, we get all of their posts
                     Response.StatusCode = (int)HttpStatusCode.OK;
-                    return Json(new
-                    {
-                        Barks = _context.Posts
+                    var barks = _context.Posts
                                     .AsNoTracking()
                                     .Where(x => x.Author == userName && x.Id < latestId)
                                     .OrderByDescending(x => x.PostDate)
-                                    .Take(10)
-                                    .ToArray(),
-                                Likes = _context.Likes
-                                    .AsNoTracking()
-                                    .Where(x => x.UserId == _userManager.GetUserId(User))
-                                    .Select(x => x.PostId)
-                                    .ToArray() 
+                                    .Take(NUM_BARKS).ToList();
+                    var loggedInUserId = _userManager.GetUserId(User);
+                    var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
+                    var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
+
+                    List<object> result = new List<object>();
+                    foreach(var bark in barks)
+                    {
+                        result.Add(new 
+                        {
+                            Bark = bark,
+                            LikesPost = likes.Any(l => l.PostId == bark.Id),
+                            Following = follows.Any(f => f.FolloweeId == bark.UserId),
+                            Owner = bark.UserId == loggedInUserId
+                        });
+                    }
+
+                    return Json(new
+                    {
+                        result
                     });
                 }
+                // if it is null, get posts for the feed of the currently logged in user
                 else
                 {
                     Response.StatusCode = (int)HttpStatusCode.OK;
 
                     // getting the list of ids for the users that that are being followed
                     List<string> userFollowsIds = _context.Follows.Where(x => x.FollowerId == _userManager.GetUserId(User)).Select(x => x.FolloweeId).ToList();
-                    return Json(new { Barks = _context.Posts
+                    var barks = _context.Posts
                                     .AsNoTracking()
                                     .Where(x => x.Id < latestId)
                                     .Where(x => x.UserId == _userManager.GetUserId(User) || userFollowsIds.Contains(x.UserId))
                                     .OrderByDescending(x => x.PostDate)
-                                    .Take(10)
-                                    .ToArray(),
-                                Likes = _context.Likes
-                                    .AsNoTracking()
-                                    .Where(x => x.UserId == _userManager.GetUserId(User))
-                                    .Select(x => x.PostId)
-                                    .ToArray() 
+                                    .Take(NUM_BARKS).ToList();
+                    var loggedInUserId = _userManager.GetUserId(User);
+                    var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
+                    var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
+
+                    List<object> result = new List<object>();
+                    foreach(var bark in barks){
+                        result.Add(new 
+                        {
+                            Bark = bark,
+                            LikesPost = likes.Any(l => l.PostId == bark.Id),
+                            Following = follows.Any(f => f.FolloweeId == bark.UserId),
+                            Owner = bark.UserId == loggedInUserId
+                        });
+                    }
+
+                    return Json(new 
+                    {
+                        result
                     });
                 }
             }
@@ -223,7 +250,7 @@ namespace Barker.Controllers.Api
         // Returns true if the currently logged in user is the author of the post. false if they do not
         private bool UserOwnsPost(int? postId)
         {
-            if (postId == null)
+            if (postId != null)
             {
                 try
                 {

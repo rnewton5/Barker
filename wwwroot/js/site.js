@@ -1,10 +1,13 @@
-﻿function displayMessage(message) {
+﻿// used to display a message in a pop-down banner.
+function displayMessage(message) {
   $("#status-message").html(message);
   $("#status-message").animate({top:'60px'}, 1000);
   $("#status-message").animate({top:'60px'}, 2000);
   $("#status-message").animate({top:'-150px'}, 500);
 }
 
+// attempts to submit a post the server from the text area at the top of the feed.
+// displays a message dictating the result
 $("#submit-post-button").click(function(event) {
   event.preventDefault();
   var $form = $("#submit-post-form"),
@@ -22,6 +25,8 @@ $("#submit-post-button").click(function(event) {
   })
 })
 
+// attempts to submit a post the server from the submit post modal
+// displays a message dictating the result
 $("#modal-submit-btn").click(function(event) {
   event.preventDefault();
   var $form = $("#modal-submit-post-form"),
@@ -39,6 +44,8 @@ $("#modal-submit-btn").click(function(event) {
   })
 })
 
+// submits a request to the server to follow a user.
+// displays a message dictating the result
 $('body').on("click", ".follow-button", function(event){
   event.preventDefault();
   var url = $(this).attr("href");
@@ -57,6 +64,8 @@ $('body').on("click", ".follow-button", function(event){
   request.send();
 })
 
+// submits a request to the server to like a post.
+// displays a message dictating the result
 $('body').on("click", ".like-post-button", function(event){
   event.preventDefault();
   var caller = $(this);
@@ -74,5 +83,57 @@ $('body').on("click", ".like-post-button", function(event){
       }
   }
   request.send();
+})
+
+/* edit post modal functions */
+
+var postId;
+var editPostCaller;
+// displays the edit post modal
+$('body').on("click", ".edit-post-btn", function() {
+  var editPostCaller = $(this);
+  postId = editPostCaller.val();
+  var text = editPostCaller.parent('.post').find('p').text();
+  $('#edit-modal-textarea').val(text);
+  $('#edit-modal').css({"display": "block"});
+})
+
+// submit the edit post form
+$('body').on("click", "#edit-modal-submit-btn", function(event) {
+  event.preventDefault();
+  var $form = $("#edit-modal-form"),
+  term = $form.find("textarea[name='Message']").val(),
+  url = $form.attr("action");
+  url += "?postId=" + postId
+
+  var model = { Message: term };
+
+  var posting = $.post(url, model);
+  
+  posting.done(function(data) {
+    displayMessage(data.message);
+    $('#edit-modal').css({"display": "none"});
+    $('#edit-modal-textarea').val('');
+  })
+})
+
+// closes the edit post modal when the x button is pressed
+$('body').on("click", ".edit-modal-close", function() {
+  $('#edit-modal').css({"display": "none"});
+  $('#edit-modal-textarea').val('');
+})
+
+// closes the edit post modal when the cancel button is pressed
+$('body').on("click", "#edit-modal-cancel-btn", function() {
+  $('#edit-modal').css({"display": "none"});
+  $('#edit-modal-textarea').val('');
+})
+
+// closes the edit post modal when the user click outside of it
+$('body').on("click", "#edit-modal", function(event) {
+  if ($(event.target).is($('#edit-modal'))){
+    $('#edit-modal-textarea').val('');
+    $('#edit-modal').css({"display": "none"});
+  }
 })
 

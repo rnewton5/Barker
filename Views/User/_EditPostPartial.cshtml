@@ -1,0 +1,23 @@
+@model Barker.Models.PostViewModels.PostViewModel
+
+<!-- modal used to edit post -->
+<div id="edit-modal">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+            <span class="edit-modal-close">&times;</span>
+            <h2>Edit your post</h2>
+          </div>
+          <form method="post" asp-controller="Post" asp-action="EditPost" id="edit-modal-form">
+            <div class="edit-modal-body">
+              <span asp-validation-for="Message" class="text-danger"></span>
+              <textarea asp-for="Message" id="edit-modal-textarea" class="modal-textarea"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="edit-modal-cancel-btn">Cancel</button>
+              <button type="button submit" class="btn btn-primary" id="edit-modal-submit-btn">Submit</button>
+            </div>
+          </form>
+      </div>
+  </div>
+</div>
