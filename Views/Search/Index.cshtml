@@ -1,0 +1,35 @@
+@model Barker.Models.SearchViewModels.SearchViewModel
+
+@{
+  ViewData["Title"] = "Search";
+}
+
+@await Html.PartialAsync("_Navbar", Model.PostVm)
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Username</th>
+      <th scope="col">Barks</th>
+      <th scope="col">Followers</th>
+    </tr>
+  </thead>
+  <tbody>
+    @{
+      int i = 1;
+      string followMessage = "";
+    }
+    @foreach(var user in Model.Users)
+    {
+      {followMessage = user.isFollowing ? "- Unfollow" : "+ Follow";}
+      <tr>
+        <th scope="row">@i</th>
+        <td><a asp-controller="User" asp-action="Profile" asp-route-userName="@user.UserName">@user.UserName</a></td>
+        <td>@user.BarksCount</td>
+        <td>@user.FollowersCount <a asp-action="ToggleFollow" asp-controller="Follow" asp-route-userName="@user.UserName" role="button" class="follow-button btn btn-danger pull-right">@followMessage</a></td>
+      </tr>
+      {i++;}
+    }
+  </tbody>
+</table>
