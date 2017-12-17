@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Barker.Models.PostViewModels;
 
 namespace Barker.Models.ManageViewModels
 {
@@ -24,6 +25,6 @@ namespace Barker.Models.ManageViewModels
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string StatusMessage { get; set; }
+        public PostViewModel PostVm { get; set; }
     }
 }

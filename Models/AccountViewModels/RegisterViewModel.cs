@@ -11,6 +11,7 @@ namespace Barker.Models.AccountViewModels
         [Required]
         [Display(Name = "User Name")]
         [StringLength(25, MinimumLength = 3)]
+        [RegularExpression(pattern: "[a-zA-Z0-9-_]+")]
         public string UserName { get; set; }
 
         [Required]
