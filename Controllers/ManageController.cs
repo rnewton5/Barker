@@ -80,7 +80,9 @@ namespace Barker.Controllers
                 AddErrors(result);
                 return View(model);
             }
-
+            
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            TempData["Status"] = "Your Username has been changed.";
             return RedirectToAction(nameof(ChangeUserName));
         }
 
