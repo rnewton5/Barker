@@ -1,4 +1,4 @@
-@model Barker.Models.UserViewModels.ProfileViewModel
+@model Barker.Models.UserViewModels.BaseProfileViewModel
 
 @{
   Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,7 +28,7 @@
   <div class="col-md-6 col-sm-8 feed">
     <div class="row top-feed-notifications">
       <div class="col-xs-3">
-        <a class="profile-feed-link"  asp-controller="User" asp-action="Profile" asp-route-userName="@Model.UserName">
+        <a class="profile-feed-link" asp-controller="User" asp-action="Profile" asp-route-userName="@Model.UserName">
           <div>
             Barks
           </div>
@@ -38,7 +38,7 @@
         </a>
       </div>
       <div class="col-xs-3">
-        <a class="profile-feed-link" href="#">
+        <a class="profile-feed-link" asp-controller="User" asp-action="Following" asp-route-userName="@Model.UserName">
           <div>
             Following
           </div>
@@ -48,7 +48,7 @@
         </a>
       </div>
       <div class="col-xs-3">
-        <a class="profile-feed-link" href="#">
+        <a class="profile-feed-link" asp-controller="User" asp-action="Followers" asp-route-userName="@Model.UserName">
           <div>
             Followers
           </div>
