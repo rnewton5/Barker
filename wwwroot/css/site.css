@@ -445,6 +445,12 @@ body {
   }
 }
 
+/* manage */
+
+.manage-submit-btn {
+  margin-bottom: 10px;
+}
+
 
 /* sm screens */
 
