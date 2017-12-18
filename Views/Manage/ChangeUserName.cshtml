@@ -1,0 +1,28 @@
+@model ChangeUserNameViewModel
+@{
+    ViewData["Title"] = "Change Username";
+}
+@Html.Partial("_Navbar", Model.PostVm)
+@Html.Partial("_ManageNav")
+@Html.Partial("_StatusMessage", TempData["Status"])
+
+<div class="container">
+    <h4>@ViewData["Title"]</h4>
+    <div class="row">
+        <form method="post" class="panel panel-default col-sm-6 col-md-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CurrentUserName"></label>
+                <input asp-for="CurrentUserName" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="CurrentUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUserName"></label>
+                <input asp-for="NewUserName" class="form-control" />
+                <span asp-validation-for="NewUserName" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-info manage-submit-btn">Update Username</button>
+        </form>
+    </div>
+</div>
+

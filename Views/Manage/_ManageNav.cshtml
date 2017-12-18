@@ -1,16 +1,12 @@
-﻿@using Barker.Views.Manage
-@inject SignInManager<User> SignInManager
-@{
-    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
-}
-
-<ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Profile</a></li>
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Password</a></li>
-    @if (hasExternalLogins)
-    {
-        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a asp-action="ExternalLogins">External logins</a></li>
-    }
-    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-action="TwoFactorAuthentication">Two-factor authentication</a></li>
-</ul>
-
+<div class="row">
+    <a asp-controller="Manage" asp-action="ChangeUserName">
+        <div class="alert alert-warning col-xs-6">
+            Change Username
+        </div>
+    </a>
+    <a asp-controller="Manage" asp-action="ChangePassword">
+        <div class="alert alert-warning col-xs-6">
+            Change Password
+        </div>
+    </a>
+</div>

@@ -1,11 +1,12 @@
-@model Barker.Models.SearchViewModels.SearchViewModel
+@model Barker.Models.UserViewModels.FollowersViewModel
 
 @{
-  ViewData["Title"] = "Search";
+  Layout = "_ProfileLayout.cshtml";
+  ViewData["Title"] = Model.UserName + "`s followers";
 }
 
-@await Html.PartialAsync("_Navbar", Model.PostVm)
-
+<hr>
+<h4>@Model.UserName is following:</h4>
 <table class="table table-striped panel panel-default">
   <thead>
     <tr>
@@ -20,7 +21,7 @@
       int i = 1;
       string followMessage = "";
     }
-    @foreach(var user in Model.Users)
+    @foreach(var user in Model.FollowerUsers)
     {
       {followMessage = user.isFollowing ? "- Unfollow" : "+ Follow";}
       <tr>
