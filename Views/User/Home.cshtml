@@ -22,7 +22,7 @@
     </div>
     <div class="row profile-card-notifications">
       <div class="col-xs-4">
-        <a class="profile-card-link" href="#">
+        <a class="profile-card-link" asp-controller="User" asp-action="Profile" asp-route-userName="@Model.UserName">
           <div>
             Barks
           </div>
@@ -32,7 +32,7 @@
         </a>
       </div>
       <div class="col-xs-4">
-        <a class="profile-card-link" href="#">
+        <a class="profile-card-link" asp-controller="User" asp-action="Following" asp-route-userName="@Model.UserName">
           <div>
             Following
           </div>
@@ -42,7 +42,7 @@
         </a>
       </div>
       <div class="col-xs-4">
-        <a class="profile-card-link" href="#">
+        <a class="profile-card-link" asp-controller="User" asp-action="Profile" asp-route-userName="@Model.UserName">
           <div>
             Followers
           </div>
