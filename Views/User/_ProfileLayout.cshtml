@@ -1,7 +1,7 @@
 @model Barker.Models.UserViewModels.ProfileViewModel
 
 @{
-  ViewData["Title"] = "Home Page";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @await Html.PartialAsync("_Navbar", Model.PostVm)
@@ -28,7 +28,7 @@
   <div class="col-md-6 col-sm-8 feed">
     <div class="row top-feed-notifications">
       <div class="col-xs-3">
-        <a class="profile-feed-link" href="#">
+        <a class="profile-feed-link"  asp-controller="User" asp-action="Profile" asp-route-userName="@Model.UserName">
           <div>
             Barks
           </div>
@@ -58,7 +58,7 @@
         </a>
       </div>
       <div class="col-xs-3">
-        <a class="profile-feed-link" href="#">
+        <a class="profile-feed-link" asp-controller="User" asp-action="Likes" asp-route-userName="@Model.UserName">
           <div>
             Likes
           </div>
