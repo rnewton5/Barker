@@ -1,0 +1,96 @@
+@model Barker.Models.UserViewModels.ProfileViewModel
+
+@{
+  ViewData["Title"] = "Home Page";
+}
+
+@await Html.PartialAsync("_Navbar", Model.PostVm)
+
+<div class="row">
+
+  <!-- left column -->
+  <div class="col-md-3 col-sm-4 ">
+    <a href="#">
+      <img src="http://wvs.topleftpixel.com/photos/2008/12/san-fransisco_long-street_-01.jpg" width="100%">
+      <!-- if the profile image exist, display it. otherwise display the default image -->
+      <!-- <img class="profile-image" src=""> -->
+    </a>
+    <div class="bio">
+      <p>@Model.UserName</p>
+      <p>Lorem ipsum dolor set</p>
+      <p>Date Joined: @Model.JoinDate</p>
+    </div>
+    @{string pFollowMessage = Model.Following.Contains(Model.UserName) ? "- Unfollow" : "+ Follow";}
+    <a asp-action="ToggleFollow" asp-controller="Follow" asp-route-userName="@Model.UserName" role="button" class="follow-button btn btn-warning">@pFollowMessage</a>
+  </div>
+
+  <!-- middle column -->
+  <div class="col-md-6 col-sm-8 feed">
+    <div class="row top-feed-notifications">
+      <div class="col-xs-3">
+        <a class="profile-feed-link" href="#">
+          <div>
+            Barks
+          </div>
+          <div>
+            @Model.BarksCount
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a class="profile-feed-link" href="#">
+          <div>
+            Following
+          </div>
+          <div>
+            @Model.FollowingCount
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a class="profile-feed-link" href="#">
+          <div>
+            Followers
+          </div>
+          <div>
+            @Model.FollowersCount
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a class="profile-feed-link" href="#">
+          <div>
+            Likes
+          </div>
+          <div>
+            @Model.LikesCount
+          </div>
+        </a>
+      </div>
+    </div>
+    @RenderBody()
+  </div>
+
+  <!-- right column -->
+  <div class="col-md-3 col-sm-4 recommendations-box">
+    <h4>
+      <strong>Check these people out!</strong>
+    </h4>
+    <div class="recommendations">
+      <hr>
+      @foreach(var user in @Model.OtherUsers)
+      {
+        <div style="display: block;">
+          <a asp-action="Profile" asp-controller="User" asp-route-userName="@user">
+            <h4 style="display: inline; padding-top: 10px;">@user</h4>
+          </a>
+          @{string followMessage = Model.Following.Contains(user) ? "- Unfollow" : "+ Follow";}
+          <a style="margin-right: 5px;" asp-action="ToggleFollow" asp-controller="Follow" asp-route-userName="@user" role="button" class="follow-button btn btn-warning pull-right">@followMessage</a>
+        </div>
+        <hr>
+      }
+    </div>
+  </div>
+</div>
+
+@await Html.PartialAsync("_EditPostPartial", @Model.PostVm)
