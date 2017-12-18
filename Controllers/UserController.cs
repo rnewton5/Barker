@@ -96,6 +96,47 @@ namespace Barker.Controllers
             return View(model);
         }
 
+        //User/Likes/<userName>
+        public IActionResult Likes(string userName){
+            if(!User.Identity.IsAuthenticated) 
+            {
+                return RedirectToAction("LoginOrRegister", "Account");
+            }
+            if(userName == null || userName == ""){
+                userName = _userManager.GetUserName(User);
+            }
+            var user = _context.Users.Where(x => x.UserName.ToLower() == userName.ToLower()).SingleOrDefault();
+            if (user == null) {
+                TempData["error"] = "Unable to find user " + userName + ".";
+                return RedirectToAction(nameof(Home));
+            }
+            Random random = new Random();
+
+
+            string realUserName = user.UserName;
+            int barksCount = _context.Posts.Where(p => p.Author == userName).Count();
+            int followingCount = _context.Follows.Where(f => f.FollowerId == user.Id).Count();
+            int followersCount = _context.Follows.Where(f => f.FolloweeId == user.Id).Count();
+            int likesCount = _context.Likes.Where(l => l.UserId == user.Id).Count();
+            var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
+            following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
+            var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+
+            ProfileViewModel model = new ProfileViewModel() {
+                UserName = realUserName,
+                BarksCount = barksCount,
+                FollowingCount = followingCount,
+                FollowersCount = followersCount,
+                LikesCount = likesCount,
+                PostVm = new PostViewModel(),
+                JoinDate = user.JoinDate,
+                Following = following,
+                OtherUsers = userNames
+            };
+
+            return View(model);
+        }
+
         public IActionResult Notifications()
         {
             return NoContent(); // NOT YET IMPLEMENTED

@@ -10,8 +10,7 @@
  *   to get more posts.
  */
 var postsContainer = document.getElementById("posts-container"); // the container to put the posts in
-var userName = document.getElementById("user-name").value; // the username to get specific posts for. can be left blank
-var url = "/Post/GetPosts/"; // the url to send a request to
+var url = document.getElementById("url").value; // the url to send a request to
 var lastPostId = -1; // the id of the most recently recieved post, server disregards if -1
 var LastRequestTime = 0; // used to limit the number of requests to the server
 var outOfPosts = false; // prevents unnecessary requests from being made
@@ -25,7 +24,7 @@ var outOfPosts = false; // prevents unnecessary requests from being made
 function initiateRequest() {
     if (outOfPosts) return;
     var request = new XMLHttpRequest();
-    request.open('GET', url + userName + "?lastId=" + lastPostId);
+    request.open('GET', url + "?lastId=" + lastPostId);
     request.onload = function() {
         var jsonData = JSON.parse(request.responseText);
         if (request.status == 200){

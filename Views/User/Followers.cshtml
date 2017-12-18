@@ -68,7 +68,7 @@
         </a>
       </div>
     </div>
-    @await Html.PartialAsync("_FeedPartial", "/Post/GetPostsByUser/" + Model.UserName)
+    @await Html.PartialAsync("_FeedPartial", @Model.UserName)
   </div>
 
   <!-- right column -->

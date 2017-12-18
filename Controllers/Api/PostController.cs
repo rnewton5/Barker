@@ -90,6 +90,7 @@ namespace Barker.Controllers.Api
             }
         }
 
+        // Returns only posts that have been liked by the user specified by 'userName'
         public async Task<JsonResult> GetLikedPosts(string userName, string lastId)
         {
             try
@@ -106,7 +107,7 @@ namespace Barker.Controllers.Api
                     throw new ApplicationException($"Unable to find user");
                 }
                 // getting a list of all the postsIds that the user as liked
-                var likedPostIds = _context.Likes.Where(l => l.UserId == user.Id).Select(l => l.Id).ToList();
+                var likedPostIds = _context.Likes.Where(l => l.UserId == user.Id).Select(l => l.PostId).ToList();
 
                 var barks = _context.Posts
                                 .AsNoTracking()
@@ -139,84 +140,88 @@ namespace Barker.Controllers.Api
             }
         }
 
-        public JsonResult GetPosts(string userName, string lastId)
+        // Returns a list of posts authored by the currently logged in user, and everyone that they follow
+        public JsonResult GetPostFeed(string lastId)
         {
             try
             {
                 int latestId = int.Parse(lastId);
                 latestId = latestId < 0 ? int.MaxValue : latestId;
+                // Getting the name of the currently logged in user
+                var userName = _userManager.GetUserName(User);
 
-                // if userName is not null, get the posts exclusively from that user.
-                if (userName != null)
-                {
-                    // checking if a user exists with the userName provided
-                    if (!_context.Users.Any(x => x.UserName.ToLower() == userName.ToLower()))
+                // getting the list of ids for the users that that are being followed
+                List<string> userFollowsIds = _context.Follows.Where(x => x.FollowerId == _userManager.GetUserId(User)).Select(x => x.FolloweeId).ToList();
+                var barks = _context.Posts
+                                .AsNoTracking()
+                                .Where(x => x.Id < latestId)
+                                .Where(x => x.Author == userName || userFollowsIds.Contains(x.UserId))
+                                .OrderByDescending(x => x.PostDate)
+                                .Take(NUM_BARKS).ToList();
+                var loggedInUserId = _userManager.GetUserId(User);
+                var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
+                var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
+
+                List<object> result = new List<object>();
+                foreach(var bark in barks){
+                    result.Add(new 
                     {
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        return Json(new { Message = "Unable to find user " + userName });
-                    }
-
-                    // if the user does exist, we get all of their posts
-                    Response.StatusCode = (int)HttpStatusCode.OK;
-                    var barks = _context.Posts
-                                    .AsNoTracking()
-                                    .Where(x => x.Author == userName && x.Id < latestId)
-                                    .OrderByDescending(x => x.PostDate)
-                                    .Take(NUM_BARKS).ToList();
-                    var loggedInUserId = _userManager.GetUserId(User);
-                    var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
-                    var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
-
-                    List<object> result = new List<object>();
-                    foreach(var bark in barks)
-                    {
-                        result.Add(new 
-                        {
-                            Bark = bark,
-                            LikesPost = likes.Any(l => l.PostId == bark.Id),
-                            Following = follows.Any(f => f.FolloweeId == bark.UserId),
-                            Owner = bark.UserId == loggedInUserId
-                        });
-                    }
-
-                    return Json(new
-                    {
-                        result
+                        Bark = bark,
+                        LikesPost = likes.Any(l => l.PostId == bark.Id),
+                        Following = follows.Any(f => f.FolloweeId == bark.UserId),
+                        Owner = bark.UserId == loggedInUserId
                     });
                 }
-                // if it is null, get posts for the feed of the currently logged in user
-                else
+
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                return Json(new {result});
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message });
+            }
+        }
+
+        // Returns a list of posts authored user specified by 'userName'
+        public JsonResult GetPostsByUser(string userName, string lastId)
+        {
+            try
+            {
+                int latestId = int.Parse(lastId);
+                latestId = latestId < 0 ? int.MaxValue : latestId;
+                // If the username provided is null, we get the username for thecurrently logged in user
+                if(userName == null){
+                    userName = _userManager.GetUserName(User);
+                }
+                // checking if a user exists with the userName provided
+                if (!_context.Users.Any(x => x.UserName.ToLower() == userName.ToLower())){
+                    throw new ApplicationException($"Unable to find user");
+                }
+                // if the user does exist, we get some of their posts
+                var barks = _context.Posts
+                                .AsNoTracking()
+                                .Where(x => x.Author == userName && x.Id < latestId)
+                                .OrderByDescending(x => x.PostDate)
+                                .Take(NUM_BARKS).ToList();
+                var loggedInUserId = _userManager.GetUserId(User);
+                var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
+                var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
+
+                List<object> result = new List<object>();
+                foreach(var bark in barks)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.OK;
-
-                    // getting the list of ids for the users that that are being followed
-                    List<string> userFollowsIds = _context.Follows.Where(x => x.FollowerId == _userManager.GetUserId(User)).Select(x => x.FolloweeId).ToList();
-                    var barks = _context.Posts
-                                    .AsNoTracking()
-                                    .Where(x => x.Id < latestId)
-                                    .Where(x => x.UserId == _userManager.GetUserId(User) || userFollowsIds.Contains(x.UserId))
-                                    .OrderByDescending(x => x.PostDate)
-                                    .Take(NUM_BARKS).ToList();
-                    var loggedInUserId = _userManager.GetUserId(User);
-                    var likes = _context.Likes.Where(l => l.UserId == loggedInUserId);
-                    var follows = _context.Follows.Where(f => f.FollowerId == loggedInUserId);
-
-                    List<object> result = new List<object>();
-                    foreach(var bark in barks){
-                        result.Add(new 
-                        {
-                            Bark = bark,
-                            LikesPost = likes.Any(l => l.PostId == bark.Id),
-                            Following = follows.Any(f => f.FolloweeId == bark.UserId),
-                            Owner = bark.UserId == loggedInUserId
-                        });
-                    }
-
-                    return Json(new 
+                    result.Add(new 
                     {
-                        result
+                        Bark = bark,
+                        LikesPost = likes.Any(l => l.PostId == bark.Id),
+                        Following = follows.Any(f => f.FolloweeId == bark.UserId),
+                        Owner = bark.UserId == loggedInUserId
                     });
                 }
+
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                return Json(new {result});
             }
             catch (Exception e)
             {
