@@ -11,9 +11,14 @@
   <!-- left column -->
   <div class="col-md-3 col-sm-4 ">
     <a href="#">
-      <img src="http://wvs.topleftpixel.com/photos/2008/12/san-fransisco_long-street_-01.jpg" width="100%">
-      <!-- if the profile image exist, display it. otherwise display the default image -->
-      <!-- <img class="profile-image" src=""> -->
+      @if(Model.ProfileImageId != Guid.Empty)
+      {
+        <img src="/Image/ViewImage/@Model.ProfileImageId" />
+      }
+      @else
+      {
+        <img src="~/images/silhouette.png" />
+      }
     </a>
     <div class="bio">
       <p>@Model.UserName</p>
