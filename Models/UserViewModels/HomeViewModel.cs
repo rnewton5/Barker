@@ -16,7 +16,5 @@ namespace Barker.Models.UserViewModels
         public Guid ProfileImageId { get; set; }
         public ICollection<string> Following { get; set; }
         public ICollection<string> OtherUsers { get; set; }
-
-        public PostViewModel PostVm { get; set; }
     }
 }

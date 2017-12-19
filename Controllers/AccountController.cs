@@ -52,7 +52,7 @@ namespace Barker.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return View(new LoginOrRegisterViewModel());
+            return View();
         }
 
         [HttpPost]

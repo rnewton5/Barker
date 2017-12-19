@@ -2,7 +2,7 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
-@model LoginOrRegisterViewModel
+@using Barker.Models.AccountViewModels
 @inject SignInManager<User> SignInManager
 
 @{
@@ -44,12 +44,12 @@
         
         <!-- Login -->
         <div class="well col-md-12 col-sm-6 login-well">
-          @await Html.PartialAsync("_LoginPartial", Model.Login)
+          @await Html.PartialAsync("_LoginPartial", new LoginViewModel())
         </div>
 
         <!-- Register -->
         <div class="well col-md-12 col-sm-6 register-well">
-          @await Html.PartialAsync("_RegisterPartial", Model.Register)
+          @await Html.PartialAsync("_RegisterPartial", new RegisterViewModel())
         </div>
         
         <!-- Create guest account -->

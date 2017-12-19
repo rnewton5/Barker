@@ -10,8 +10,6 @@ namespace Barker.Models.SearchViewModels
     public class SearchViewModel
     {
         public ICollection<UserSearchItem> Users { get; set; }
-
-        public PostViewModel PostVm { get; set; }
     }
 
     public class UserSearchItem 

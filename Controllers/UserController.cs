@@ -51,7 +51,6 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 ProfileImageId = profileImageId,
-                PostVm = new PostViewModel(),
                 Following = following,
                 OtherUsers = userNames
             };
@@ -97,7 +96,6 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 ProfileImageId = profileImageId,
-                PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
                 Following = following,
                 OtherUsers = userNames
@@ -142,7 +140,6 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
-                PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
                 Following = following,
                 OtherUsers = userNames
@@ -203,7 +200,6 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
-                PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
                 Following = following,
                 OtherUsers = userNames,
@@ -265,7 +261,6 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
-                PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
                 Following = following,
                 OtherUsers = userNames,

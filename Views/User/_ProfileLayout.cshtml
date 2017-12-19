@@ -1,10 +1,11 @@
+@using Barker.Models.PostViewModels
 @model Barker.Models.UserViewModels.BaseProfileViewModel
 
 @{
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@await Html.PartialAsync("_Navbar", Model.PostVm)
+@await Html.PartialAsync("_Navbar", new PostViewModel())
 
 <div class="row">
 
@@ -98,4 +99,4 @@
   </div>
 </div>
 
-@await Html.PartialAsync("_EditPostPartial", @Model.PostVm)
+@await Html.PartialAsync("_EditPostPartial", new PostViewModel())

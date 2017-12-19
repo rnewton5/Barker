@@ -20,7 +20,5 @@ namespace Barker.Models.UserViewModels
         public DateTime JoinDate { get; set; }
         public ICollection<string> Following { get; set; }
         public ICollection<string> OtherUsers { get; set; }
-
-        public PostViewModel PostVm { get; set; }
     }
 }

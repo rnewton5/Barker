@@ -18,7 +18,5 @@ namespace Barker.Models.ManageViewModels
         [RegularExpression(pattern: "[a-zA-Z0-9-_]+")]
         [Display(Name = "New UserName")]
         public string NewUserName { get; set; }
-
-        public PostViewModel PostVm { get; set; }
     }
 }

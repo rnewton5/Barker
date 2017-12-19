@@ -1,8 +1,11 @@
+@using Barker.Models.PostViewModels
 @model ChangeUserNameViewModel
+
 @{
     ViewData["Title"] = "Change Username";
 }
-@Html.Partial("_Navbar", Model.PostVm)
+
+@Html.Partial("_Navbar", new PostViewModel())
 @Html.Partial("_ManageNav")
 @Html.Partial("_StatusMessage", TempData["Status"])
 
