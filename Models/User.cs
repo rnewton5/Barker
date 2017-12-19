@@ -12,7 +12,7 @@ namespace Barker.Models
     {   
         //data
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd - H:mm}")]
         public DateTime JoinDate { get; set; }
         public Guid ProfileImageId { get; set; }
 

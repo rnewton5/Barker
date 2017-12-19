@@ -19,6 +19,7 @@ namespace Barker.Models
         public string Author { get; set; }
 
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd - H:mm}")]
         public DateTime PostDate { get; set; }
 
         // Foreign keys and navigation properties

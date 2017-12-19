@@ -14,6 +14,8 @@ namespace Barker.Models.UserViewModels
         public int FollowingCount { get; set; }
         public int FollowersCount { get; set; }
         public int LikesCount { get; set; }
+        
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd - H:mm}")]
         public DateTime JoinDate { get; set; }
         public ICollection<string> Following { get; set; }
         public ICollection<string> OtherUsers { get; set; }
