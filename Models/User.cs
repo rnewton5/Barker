@@ -14,6 +14,7 @@ namespace Barker.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime JoinDate { get; set; }
+        public Guid ProfileImageId { get; set; }
 
         // Navigation properties
         public List<Post> Posts { get; set; }
