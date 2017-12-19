@@ -1,14 +1,16 @@
+@using Barker.Models.PostViewModels
+
 @{
     ViewData["Title"] = "Upload Profile Picture";
 }
-@Html.Partial("_Navbar", Model.PostVm)
+@Html.Partial("_Navbar", new PostViewModel())
 @Html.Partial("_ManageNav")
 @Html.Partial("_StatusMessage", TempData["Status"])
 
 <div class="container">
     <h4>@ViewData["Title"]</h4>
     <div class="row">
-        <form method="post" class="panel panel-default col-sm-6 col-md-4">
+        <form method="post" enctype="multipart/form-data" class="panel panel-default col-sm-6 col-md-4">
             <input type="file" name="files" />
             <button>Upload</button>
         </form>
