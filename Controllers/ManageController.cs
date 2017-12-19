@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using Barker.Models;
 using Barker.Models.ManageViewModels;
 using Barker.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Barker.Data;
 
 namespace Barker.Controllers
 {
@@ -25,6 +28,7 @@ namespace Barker.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly BarkerDbContext _context;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
@@ -33,13 +37,15 @@ namespace Barker.Controllers
           SignInManager<User> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          BarkerDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [HttpGet]
@@ -124,6 +130,56 @@ namespace Barker.Controllers
             TempData["Status"] = "Your password has been changed.";
 
             return RedirectToAction(nameof(ChangePassword));
+        }
+
+        [HttpGet]
+        public IActionResult UploadProfileImage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UploadProfileImage(IList<IFormFile> files)
+        {
+            try
+            {
+                IFormFile uploadedImage = files.FirstOrDefault();
+                if (uploadedImage == null || uploadedImage.ContentType.ToLower().StartsWith("image/"))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    uploadedImage.OpenReadStream().CopyTo(ms);
+
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    var imageId = Guid.NewGuid();
+                    var user = _userManager.GetUserAsync(User).Result;
+                    Models.Image imageEntity = new Models.Image()
+                    {
+                        Id = imageId,
+                        Name = uploadedImage.Name,
+                        Data = ms.ToArray(),
+                        Width = image.Width,
+                        Height = image.Height,
+                        ContentType = uploadedImage.ContentType,
+                        User = _userManager.GetUserAsync(User).Result
+                    };
+
+                    // TEMPORARY    
+                    // for right now, the most recently uploaded image is the users profile image
+                    user.ProfileImageId = imageId;
+
+                    _context.Images.Add(imageEntity);
+                    _context.Users.Update(user);
+                    _context.SaveChanges();
+                }
+
+                TempData["Status"] = "Your profile picture has been changed.";
+                return View();
+            }
+            catch (Exception e)
+            {
+                TempData["Status"] = e.Message;
+                return View();
+            }
         }
 
         /*
