@@ -16,12 +16,14 @@ namespace Barker.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Follow> Follows { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Like>().ToTable("Likes");
             builder.Entity<Follow>().ToTable("Follows");
+            builder.Entity<Image>().ToTable("Images");
 
             base.OnModelCreating(builder);
         }
