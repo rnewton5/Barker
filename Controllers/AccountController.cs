@@ -88,11 +88,17 @@ namespace Barker.Controllers
                 TempData["info"] = "Invalid information provided";
                 return RedirectToAction(nameof(LoginOrRegister));
             }
-            if (_context.Users.Any(u => u.Email == model.Email))
+            if (_context.Users.Any(u => u.UserName == model.UserName))
             {
-                TempData["info"] = "An account already exists for that email";
+                TempData["info"] = "An account already exists with that user name";
                 return RedirectToAction(nameof(LoginOrRegister));
             }
+            if (_context.Users.Any(u => u.Email == model.Email))
+            {
+                TempData["info"] = "An account already exists with that email address";
+                return RedirectToAction(nameof(LoginOrRegister));
+            }
+            
             var user = new User {  
                 UserName = model.UserName, 
                 Email = model.Email,
