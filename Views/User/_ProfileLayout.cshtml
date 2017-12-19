@@ -13,11 +13,11 @@
     <a href="#">
       @if(Model.ProfileImageId != Guid.Empty)
       {
-        <img src="/Image/ViewImage/@Model.ProfileImageId" />
+        <img class="profile-image" src="/Image/ViewImage?id=@Model.ProfileImageId" />
       }
-      @else
+      else
       {
-        <img src="~/images/silhouette.png" />
+        <img class="profile-image" src="~/images/silhouette.png" />
       }
     </a>
     <div class="bio">

@@ -15,7 +15,7 @@
       <div class="profile-card-image-background">
         @if(Model.ProfileImageId != Guid.Empty)
         {
-          <img src="/Image/ViewImage/@Model.ProfileImageId" />
+          <img class="profile-image" src="/Image/ViewImage?id=@Model.ProfileImageId" />
         }
       </div>
     </a>
