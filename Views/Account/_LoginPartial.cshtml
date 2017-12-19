@@ -2,7 +2,6 @@
 
 <!-- Login -->
 <form method="post" asp-action="Login" >
-  <span class="text-danger">@TempData["info"]</span>
   <div class="form-group">
     <input asp-for="Email" class="form-control" placeholder="Email"/>
     <span asp-validation-for="Email" class="text-danger"></span>

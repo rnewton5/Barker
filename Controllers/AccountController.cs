@@ -83,26 +83,32 @@ namespace Barker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new User {  
-                    UserName = model.UserName, 
-                    Email = model.Email,
-                    JoinDate = DateTime.Now
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
+                TempData["info"] = "Invalid information provided";
+                return RedirectToAction(nameof(LoginOrRegister));
+            }
+            if (_context.Users.Any(u => u.Email == model.Email))
+            {
+                TempData["info"] = "An account already exists for that email";
+                return RedirectToAction(nameof(LoginOrRegister));
+            }
+            var user = new User {  
+                UserName = model.UserName, 
+                Email = model.Email,
+                JoinDate = DateTime.Now
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User created a new account with password.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToAction(nameof(UserController.Home), "User");
-                }
-                AddErrors(result);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                _logger.LogInformation("User created a new account with password.");
+                return RedirectToAction(nameof(UserController.Home), "User");
             }
 
-            // If we got this far, something failed, redisplay form
+            AddErrors(result);
             TempData["info"] = "Invalid information provided";
             return RedirectToAction(nameof(LoginOrRegister));
         }
