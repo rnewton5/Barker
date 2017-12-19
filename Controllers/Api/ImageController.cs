@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing;
 using Barker.Data;
 using Microsoft.AspNetCore.Identity;
+using System.Net;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,38 +27,42 @@ namespace Barker.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult UploadImage(IList<IFormFile> files)
+        public JsonResult UploadImage(IList<IFormFile> files)
         {
-            IFormFile uploadedImage = files.FirstOrDefault();
-            if (uploadedImage == null || uploadedImage.ContentType.ToLower().StartsWith("image/"))
+            try
             {
-                MemoryStream ms = new MemoryStream();
-                uploadedImage.OpenReadStream().CopyTo(ms);
-
-                System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
-                var imageId = Guid.NewGuid();
-                var user = _userManager.GetUserAsync(User).Result;
-                Models.Image imageEntity = new Models.Image()
+                IFormFile uploadedImage = files.FirstOrDefault();
+                if (uploadedImage == null || uploadedImage.ContentType.ToLower().StartsWith("image/"))
                 {
-                    Id = imageId,
-                    Name = uploadedImage.Name,
-                    Data = ms.ToArray(),
-                    Width = image.Width,
-                    Height = image.Height,
-                    ContentType = uploadedImage.ContentType,
-                    User = _userManager.GetUserAsync(User).Result
-                };
+                    MemoryStream ms = new MemoryStream();
+                    uploadedImage.OpenReadStream().CopyTo(ms);
 
-                // TEMPORARY    
-                // for right now, the most recently uploaded image is the users profile image
-                user.ProfileImageId = imageId;
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    var imageId = Guid.NewGuid();
+                    var user = _userManager.GetUserAsync(User).Result;
+                    Models.Image imageEntity = new Models.Image()
+                    {
+                        Id = imageId,
+                        Name = uploadedImage.Name,
+                        Data = ms.ToArray(),
+                        Width = image.Width,
+                        Height = image.Height,
+                        ContentType = uploadedImage.ContentType,
+                        User = user
+                    };
 
-                _context.Images.Add(imageEntity);
-                _context.Users.Update(user);
-                _context.SaveChanges();
+                    _context.Images.Add(imageEntity);
+                    _context.SaveChanges();
+                }
+
+                Response.StatusCode = (int)HttpStatusCode.Created;
+                return Json(new { Message = "Image Uploaded!!" });
             }
-
-            return RedirectToAction("Index");
+            catch (Exception e)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = e.Message });
+            }
         }
 
         [HttpGet]
