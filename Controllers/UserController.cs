@@ -42,6 +42,7 @@ namespace Barker.Controllers
             var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
             following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+            var profileImageId = user.Result.ProfileImageId;
 
             HomeViewModel model = new HomeViewModel()
             {
@@ -49,6 +50,7 @@ namespace Barker.Controllers
                 BarksCount = barksCount,
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
+                ProfileImageId = profileImageId,
                 PostVm = new PostViewModel(),
                 Following = following,
                 OtherUsers = userNames
@@ -85,6 +87,7 @@ namespace Barker.Controllers
             var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
             following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+            var profileImageId = user.ProfileImageId;
 
             ProfileViewModel model = new ProfileViewModel()
             {
@@ -93,6 +96,7 @@ namespace Barker.Controllers
                 FollowingCount = followingCount,
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
+                ProfileImageId = profileImageId,
                 PostVm = new PostViewModel(),
                 JoinDate = user.JoinDate,
                 Following = following,
