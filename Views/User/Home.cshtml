@@ -13,8 +13,10 @@
     <div class="profile-card-bubble"></div>
     <a  asp-controller="User" asp-action="Profile">
       <div class="profile-card-image-background">
-        <!-- if the profile image exist, display it. otherwise display the default image -->
-        <!-- <img class="profile-image" src=""> -->
+        @if(Model.ProfileImageId != Guid.Empty)
+        {
+          <img src="/Image/ViewImage/@Model.ProfileImageId" />
+        }
       </div>
     </a>
     <div class="profile-card-info">
