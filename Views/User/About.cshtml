@@ -1,7 +1,35 @@
-﻿@{
-    ViewData["Title"] = "About";
+﻿@using Barker.Models.PostViewModels
+
+@{
+    ViewData["Title"] = "About Barker";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+@await Html.PartialAsync("_Navbar", new PostViewModel())
+
+<div class="well">
+    <p>
+        Although Barker is supposed to be a clone of <a href="www.twitter.com">Twitter</a>, it is no way meant to compete the site.
+        <br>
+        <br>
+        Barker is my very first web application written in ASP.NET! Right now Barker uses:
+    </p>
+    <ul>
+        <li>ASP.NET core 2.0</li>
+        <li>Entity Framework Core</li>
+        <li>PostgreSQL</li>
+        <li>Bootstrap 3.3.7</li>
+    </ul>
+    <p>
+        Please <a href="https://github.com/rnewton5/Barker">check Barker out on GitHub.</a> I intend to add more features to Barker in the future.
+        <br>
+        Some of these features include:
+        <ul>
+            <li>Ability to comment on posts</li>
+            <li>'Hashtag' like system</li>
+            <li>Ability to post photos</li>
+            <li>Instant messaging</li>
+            <li>Password recovery</li>
+        </ul>
+    </p>
+</div>
