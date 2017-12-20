@@ -31,7 +31,7 @@ namespace Barker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFrameworkNpgsql().AddDbContext<BarkerDbContext>(options =>
-                options.UseNpgsql(Configuration["BarkerConnection"]));
+                options.UseNpgsql(Configuration.GetConnectionString("BarkerConnection")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<BarkerDbContext>()
