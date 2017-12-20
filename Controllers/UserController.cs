@@ -132,6 +132,7 @@ namespace Barker.Controllers
             var following = _context.Follows.Where(f => f.FollowerId == _userManager.GetUserId(User)).Select(f => f.FolloweeId).ToList();
             following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+            var profileImageId = user.ProfileImageId;
 
             ProfileViewModel model = new ProfileViewModel()
             {
@@ -141,6 +142,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames
             };
@@ -176,6 +178,7 @@ namespace Barker.Controllers
             var following = _context.Follows.Where(f => f.FollowerId == loggedInUserId).Select(f => f.FolloweeId).ToList();
             following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+            var profileImageId = user.ProfileImageId;
 
             // Getting the list of users followed by the specified user
             string userId = _context.Users.Single(u => u.UserName == realUserName).Id;
@@ -201,6 +204,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames,
                 FollowingUsers = formattedUserList
@@ -237,6 +241,7 @@ namespace Barker.Controllers
             var following = _context.Follows.Where(f => f.FollowerId == loggedInUserId).Select(f => f.FolloweeId).ToList();
             following = _context.Users.Where(u => following.Contains(u.Id)).Select(u => u.UserName).ToList();
             var userNames = _context.Users.Select(u => u.UserName).Where(x => x != _userManager.GetUserName(User)).OrderBy(x => random.Next()).Take(10).ToList();
+            var profileImageId = user.ProfileImageId;
 
             // Getting the list of users who are following the specified user
             string userId = _context.Users.Single(u => u.UserName == realUserName).Id;
@@ -262,6 +267,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames,
                 FollowerUsers = formattedUserList
