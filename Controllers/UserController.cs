@@ -97,6 +97,7 @@ namespace Barker.Controllers
                 LikesCount = likesCount,
                 ProfileImageId = profileImageId,
                 JoinDate = user.JoinDate,
+                Bio = user.Bio,
                 Following = following,
                 OtherUsers = userNames
             };
@@ -142,6 +143,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                Bio = user.Bio,
                 ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames
@@ -204,6 +206,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                Bio = user.Bio,
                 ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames,
@@ -267,6 +270,7 @@ namespace Barker.Controllers
                 FollowersCount = followersCount,
                 LikesCount = likesCount,
                 JoinDate = user.JoinDate,
+                Bio = user.Bio,
                 ProfileImageId = profileImageId,
                 Following = following,
                 OtherUsers = userNames,

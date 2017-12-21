@@ -23,7 +23,7 @@
     </a>
     <div class="bio">
       <p>@Model.UserName</p>
-      <p>Lorem ipsum dolor set</p>
+      <p>@Model.Bio</p>
       <p>Date Joined: @Model.JoinDate</p>
     </div>
     @{string pFollowMessage = Model.Following.Contains(Model.UserName) ? "- Unfollow" : "+ Follow";}
