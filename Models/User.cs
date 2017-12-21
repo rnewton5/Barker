@@ -16,6 +16,9 @@ namespace Barker.Models
         public DateTime JoinDate { get; set; }
         public Guid ProfileImageId { get; set; }
 
+        [StringLength(200, MinimumLength = 3)]
+        public string Bio { get; set; }
+
         // Navigation properties
         public List<Post> Posts { get; set; }
         public ICollection<Follow> Followees { get; set; }
