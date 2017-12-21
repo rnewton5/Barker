@@ -209,10 +209,11 @@ namespace Barker.Controllers
             {
                 user.Bio = model.Bio;
                 _context.Users.Update(user);
-                TempData["Status"] = "Your password has been changed.";
-                return RedirectToAction(nameof(ChangePassword));
+                await _context.SaveChangesAsync();
+                TempData["Status"] = "Your bio has been changed.";
+                return RedirectToAction(nameof(ChangeBio));
             }
-            catch (Exception e) {
+            catch (Exception) {
                 TempData["Status"] = "An error occurred when updating your bio.";
                 return View(model);
             }
