@@ -182,6 +182,42 @@ namespace Barker.Controllers
             }
         }
 
+        
+        [HttpGet]
+        public IActionResult ChangeBio()
+        {
+            var model = new ChangeBioViewModel();
+            model.Bio = _userManager.GetUserAsync(User).Result.Bio;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeBio(ChangeBioViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            
+            try
+            {
+                user.Bio = model.Bio;
+                _context.Users.Update(user);
+                TempData["Status"] = "Your password has been changed.";
+                return RedirectToAction(nameof(ChangePassword));
+            }
+            catch (Exception e) {
+                TempData["Status"] = "An error occurred when updating your bio.";
+                return View(model);
+            }
+        }
+
         /*
         [HttpPost]
         [ValidateAntiForgeryToken]
