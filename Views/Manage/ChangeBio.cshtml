@@ -1,0 +1,26 @@
+@using Barker.Models.PostViewModels
+@model ChangeBioViewModel
+
+@{
+    ViewData["Title"] = "Change bio";
+}
+
+@Html.Partial("_Navbar", new PostViewModel())
+@Html.Partial("_ManageNav")
+@Html.Partial("_StatusMessage", TempData["Status"])
+
+<div class="container">
+    <h4>@ViewData["Title"]</h4>
+    <div class="row">
+        <form method="post" class="panel col-sm-6 col-md-6">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Bio"></label>
+                <textarea asp-for="Bio" rows="6" class="form-control"></textarea>
+                <span asp-validation-for="Bio" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-info manage-submit-btn">Update bio</button>
+        </form>
+    </div>
+</div>
+
