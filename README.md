@@ -1,6 +1,6 @@
 # Barker
 
-Barker is a twitter clone built using ASP.NET Core 2.0.
+Barker is a twitter clone built using ASP.NET Core 2.1.
 
 Technologies used:
 
@@ -10,17 +10,19 @@ Technologies used:
  * PostgreSQL
  * Bootstrap 
  
-Check it out in action at 
+To run barker, you'll need to have [.NET Core 2.1 or above](https://dotnet.microsoft.com/download) and preferably Docker.
 
- * [barkerapp.azurewebsites.net](http://barkerapp.azurewebsites.net/)
+ To run,
  
-You can either create your own account, or use any of the accounts I made to test the site with.
-
-Email | Password
-------|---------
-red@example.com | P@ssword1
-green@example.com | P@ssword1
-blue@example.com | P@ssword1
+ 1. clone this repository
+ 2. run `dotnet restore`
+ 3. run the command
+ 
+  > docker run -p 5432:5432 --name barkerDev -e POSTGRES_DB=BarkerDb -e POSTGRES_USER=barker -e POSTGRES_PASSWORD=barker -d postgres
+  
+  4. run `dotnet build`
+  5. run `export ASPNETCORE_ENVIRONMENT=Development`
+  6. run `dotnet run`
 
 ## images
 
