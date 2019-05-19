@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Barker.Data;
 using Barker.Models;
-using Barker.Services;
 
 namespace Barker
 {
@@ -42,7 +41,7 @@ namespace Barker
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IService, Service>();
 
             services.AddMvc();
         }

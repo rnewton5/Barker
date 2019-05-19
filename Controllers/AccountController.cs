@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Barker.Models;
 using Barker.Models.AccountViewModels;
-using Barker.Services;
 using System.Web;
 using Barker.Data;
 
@@ -24,7 +23,6 @@ namespace Barker.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         private readonly BarkerDbContext _context;
@@ -32,13 +30,11 @@ namespace Barker.Controllers
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender,
             ILogger<AccountController> logger,
             BarkerDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
             _logger = logger;
             _context = context;
         }
